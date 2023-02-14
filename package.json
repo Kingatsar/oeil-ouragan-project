@@ -1,5 +1,14 @@
 {
   "dependencies": {
-    "log-timestamp": "^0.3.0"
-  }
+    "log-timestamp": "^0.3.0",
+    "mongoose": "^6.9.1",
+    "node-nmea": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "type": "module"
 }

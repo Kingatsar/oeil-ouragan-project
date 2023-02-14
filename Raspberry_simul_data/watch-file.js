@@ -5,16 +5,22 @@
 const fs = require('fs');
 require('log-timestamp');
 
-const mySensors = '/dev/shm/sensors';
+const sensors = '/dev/shm/sensors';
+const tphLog = '/dev/shm/tph.log';
+const rainCounterLog = '/dev/shm/rainCounter.log';;
+const gpsNmea = '/dev/shm/gpsNmea';
 
-watchMyFile(mySensors);
-
+watchMyFile(sensors);
+// watchMyFile(tphLog);
+// watchMyFile(rainCounterLog);
+// watchMyFile(gpsNmea);
 
 // ---------------------------- Functions ---------------------------- //
 function watchMyFile(filePath) {
 
     /* Watches a given file if it changed or not */
 
+    let myJSON;
     console.log(`Watching for file changes on ${filePath}`);
 
     fs.watchFile(filePath, (curr, prev) => {
@@ -34,7 +40,10 @@ function watchMyFile(filePath) {
                 if (err) {
                     return console.error(err);
                 }
-                console.log(data);
+
+                myJSON = changeDataToJSON(data);
+                console.log(myJSON.date);
+
                 //close open file
                 fs.close(filedata, (err) => {
                     if (err) {
@@ -46,4 +55,9 @@ function watchMyFile(filePath) {
             })
         })
     });
+}
+
+function changeDataToJSON(data) {
+    /* Changes data to JSON format */
+    return JSON.parse(data.toString());
 }

@@ -11,13 +11,13 @@ import fs from 'fs';
 // import * from 'log-timestamp';
 
 // insert new data into mongoDB
-// const sensors = '/dev/shm/sensors';
-// const tphLog = '/dev/shm/tph.log';
+const sensors = '/dev/shm/sensors';
+const tphLog = '/dev/shm/tph.log';
 // const rainCounterLog = '/dev/shm/rainCounter.log';;
 const gpsNmea = '/dev/shm/gpsNmea';
 
-// watchMyFile(sensors);
-// watchMyFile(tphLog);
+watchMyFile(sensors);
+watchMyFile(tphLog);
 watchMyFile(gpsNmea);
 
 

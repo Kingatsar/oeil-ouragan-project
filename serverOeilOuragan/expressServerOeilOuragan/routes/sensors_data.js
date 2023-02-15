@@ -44,7 +44,7 @@ router.get('/archive', function (req, res, next) {
 });
 
 
-/* GET last values of measurments. */
+/* GET last values of measurements. */
 router.get('/live/:feature?', function (req, res, next) {
     let feat = req.params.feature;
     console.log(" ----------- feat -----------");

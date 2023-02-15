@@ -45,7 +45,10 @@ router.get('/archive', function (req, res, next) {
 
 
 /* GET last values of measurments. */
-router.get('/live', function (req, res, next) {
+router.get('/live/:feature?', function (req, res, next) {
+    let feat = req.params.feature;
+    console.log(" ----------- feat -----------");
+    console.log(feat != undefined);
     console.log('get value for live');
     const { MongoClient } = require('mongodb');
 
@@ -86,11 +89,24 @@ router.get('/live', function (req, res, next) {
         return Promise.all([myCollec, myCollecLoc]);
     }
 
-    main()
-        .then((result) => res.json(generateJSONLive(JSON.stringify(result))))
-        .catch(console.error)
-        .finally(() => client.close())
-        .then(console.log("connection done"));
+    //generateJSONFeature(data, feature)
+
+    if (feat != undefined) {
+        main()
+            .then((result) => res.json(generateJSONFeature(JSON.stringify(result), feat)))
+            .catch(console.error)
+            .finally(() => client.close())
+            .then(console.log("connection done"));
+
+    } else {
+        main()
+            .then((result) => res.json(generateJSONLive(JSON.stringify(result))))
+            .catch(console.error)
+            .finally(() => client.close())
+            .then(console.log("connection done"));
+    }
+
+
 });
 
 
@@ -163,9 +179,10 @@ function generateJSONLive(data) {
 
 function generateJSONFeature(data, feature) {
     /*  feature String */
+    console.log(" ----------- generateJSONFeature ----------- ")
     let result;
     liveJSON = generateJSONLive(data);
-    if (feature.includes(lum)) {
+    if (feature.includes("lum")) {
         result = {
             id: liveJSON.id,
             name: liveJSON.name,
@@ -174,13 +191,73 @@ function generateJSONFeature(data, feature) {
             status: liveJSON.status,
             measurements: liveJSON.measurements.lum
         }
+    } else if (feature.includes("temp")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.temp
+        }
+    } else if (feature.includes("hum")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.hum
+        }
+    } else if (feature.includes("pre")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.pre
+        }
+    } else if (feature.includes("rain")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.rain
+        }
+    } else if (feature.includes("wind_speed")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.wind_speed
+        }
+    } else if (feature.includes("wind_dir")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status,
+            measurements: liveJSON.measurements.wind_dir
+        }
+    } else if (feature.includes("gps")) {
+        result = {
+            id: liveJSON.id,
+            name: liveJSON.name,
+            location: liveJSON.location,
+            time: liveJSON.time,
+            status: liveJSON.status
+        }
     }
 
     return result;
 
 }
-
-
 
 
 

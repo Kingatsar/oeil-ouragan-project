@@ -74,14 +74,14 @@ async function dosomething(data, filePath) {
         myNewData = createSensor(dataJSON);
 
     }
-    // else if (filePath.includes("tph")) {
+    if (filePath.includes("tph")) {
 
-    //     dataJSON = changeToJSON(data);
-    //     console.log(dataJSON.date);
-    //     console.log(dataJSON.hygro);
-    //     myNewData = createTph(dataJSON);
+        dataJSON = changeToJSON(data);
+        console.log(dataJSON.date);
+        console.log(dataJSON.hygro);
+        myNewData = createTph(dataJSON);
 
-    // } 
+    }
 
     if (filePath.includes("gpsNmea")) {
         myNewData = createGPSNmea(data);

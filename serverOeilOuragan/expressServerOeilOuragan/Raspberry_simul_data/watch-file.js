@@ -1,12 +1,12 @@
 
 // https://kodewithkamran.medium.com/implementing-tail-f-in-node-js-edeb412eb587
 
-// const sensors = '/dev/shm/sensors';
+const sensors = '/dev/shm/sensors';
 // const tphLog = '/dev/shm/tph.log';
 // const rainCounterLog = '/dev/shm/rainCounter.log';;
 // const gpsNmea = '/dev/shm/gpsNmea';
 
-// watchMyFile(sensors);
+watchMyFile(sensors);
 // watchMyFile(tphLog);
 // watchMyFile(rainCounterLog);
 // watchMyFile(gpsNmea);

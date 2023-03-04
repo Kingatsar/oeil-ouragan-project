@@ -6,12 +6,10 @@
     <div class="scrollableCard">
         <div v-for="(value, index) in Object.entries(measurements)" :key="index">
             <MyCard v-bind:name="value[1].name" v-bind:unit="value[1].unit" v-bind:value="value[1].value"
-                v-bind:imageUrl="url[value[0]]"></MyCard>
+                v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="'http://localhost:3000/live/' + value[0]">
+            </MyCard>
         </div>
     </div>
-
-
-
 </template>
 
 <script>
@@ -41,7 +39,7 @@ export default {
     },
 
     created: function () {
-        fetch("http://172.31.58.187:3000/sensor/live")
+        fetch("http://localhost:3000/live")
             .then((res) => res.json())
             .then((json) => {
                 console.log(json.measurements);
@@ -56,6 +54,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped src="../../assets/css/card.css">
-
-</style>
+<style scoped src="../../assets/css/card.css"></style>

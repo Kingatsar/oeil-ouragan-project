@@ -7,11 +7,11 @@
       <div class="card-body">
         <p class="card-title">Data: {{ name }}</p>
         <!-- <h5 class="card-text">Unit:{{ unit }} </h5> -->
-        <a href="#" class="btn btn-primary">{{ value }} {{ unit }}</a>
+        <p>{{ localValue }} {{ unit }}</p>
+        <button @click="uniqueLive(uniqueLiveUrl)" class="btn btn-primary">refresh</button>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 export default {
@@ -20,8 +20,27 @@ export default {
     name: String,
     unit: String,
     value: String,
-    imageUrl: String
+    imageUrl: String,
+    uniqueLiveUrl: String
   },
+
+  data() {
+    return {
+      localValue: this.value
+    }
+  },
+  methods: {
+    uniqueLive(uniqueLiveUrl) {
+      // alert(uniqueLiveUrl)
+      fetch(uniqueLiveUrl)
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json.measurements.temp.value);
+          this.localValue = json.measurements.temp.value;
+        })
+    }
+  },
+
 };
 
 

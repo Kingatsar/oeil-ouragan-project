@@ -2,20 +2,16 @@
   <SideBar></SideBar>
   <LiveComponent msg="Live" />
 
-  <h5>Archive</h5>
+  <h1>Archive</h1>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="d-flex flex-lg-row flex-lg-row justify-content-lg-center panel">
-        <div v-for="(value, index) in Object.entries(dataNames)" :key="index">
-          <ChartCard></ChartCard>
-        </div>
-      </div>
+  <div class="graphs">
+    <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
+      <ChartCard :charttype="chartType[index]"></ChartCard>
     </div>
   </div>
 
-  <MapCompoment></MapCompoment>
 
+  <MapCompoment></MapCompoment>
 </template>
 
 <script>
@@ -38,7 +34,6 @@ export default {
   data() {
     return {
       dataNames: {
-
         "lum": "lumière",
         "hum": "Humidity",
         "temp": "Temperature",
@@ -46,7 +41,20 @@ export default {
         "rain": "Rainfall",
         "wind_speed": "Wind Speed",
         "wind_dir": "Wind Direction"
-      }
+      },
+
+      chartType: [
+        "bar",
+        "line",
+        "bar",
+        "line",
+        "bar",
+        "line",
+        "bar",
+
+      ]
+
+
     }
   }
 
@@ -61,12 +69,6 @@ export default {
   height: 180px;
 }
 
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  grid-auto-rows: 100px 200px;
-}
 
 
 #app {
@@ -76,5 +78,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.graphs {
+  display: grid;
+  grid-template-columns: 33% 33% 34%;
+  row-gap: 2px;
+  column-gap: 1%;
+  justify-content: center;
+  margin-left: 6%;
 }
 </style>

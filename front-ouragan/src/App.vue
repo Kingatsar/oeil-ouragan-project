@@ -6,7 +6,7 @@
 
   <div class="graphs">
     <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
-      <ChartCard :charttype="chartType[index]"></ChartCard>
+      <ChartCard :charttype="chartType[index]" :chartNum="index"></ChartCard>
     </div>
   </div>
 
@@ -81,11 +81,23 @@ export default {
 }
 
 .graphs {
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 33% 33% 34%;
-  row-gap: 2px;
-  column-gap: 1%;
-  justify-content: center;
-  margin-left: 6%;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+}
+
+@media (min-width: 600px) {
+  .graphs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .graphs {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 </style>

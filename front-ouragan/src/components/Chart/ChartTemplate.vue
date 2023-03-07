@@ -10,7 +10,7 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, LineElement, Poin
 ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, CategoryScale, LinearScale)
 
 export default {
-    name: 'BarChart',
+    name: 'ChartTemplate',
     props: { type: String },
     components: { Bar, Line },
     data() {

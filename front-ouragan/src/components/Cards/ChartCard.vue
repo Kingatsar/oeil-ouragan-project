@@ -2,7 +2,7 @@
   <div class="chart-card">
     <div class="card" style="width:100%; height:300px;">
       <div class="card-body">
-        <BarChart :type="charttype"></BarChart>
+        <ChartTemplate :type="charttype"></ChartTemplate>
       </div>
       <!--va-card-title>{{ name }}</va-card-title-->
       <!--va-date-input v-model="dateStart" manual-input />
@@ -10,21 +10,21 @@
       <div class="card-footer">
         <div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-            <label class="form-check-label" for="inlineRadio1">today</label>
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option1"
+              checked>
+            <label class="form-check-label" for="inlineRadio1">week</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">last week</label>
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option2">
+            <label class="form-check-label" for="inlineRadio2">month</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">last month</label>
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option2">
+            <label class="form-check-label" for="inlineRadio2">year</label>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">this years</label>
-          </div>
+          <va-date-input v-model="dateStart" manual-input />
+          <button class="btn btn-primary">refresh</button>
+
         </div>
       </div>
     </div>
@@ -32,19 +32,20 @@
 </template> 
 
 <script>
-import BarChart from '../Chart/BarChart.vue';
+import ChartTemplate from '../Chart/ChartTemplate.vue';
 
 
 export default {
   name: "ChartCard",
   components: {
-    BarChart
+    ChartTemplate
   },
   props: {
     name: String,
     unit: String,
     value: String,
-    charttype: String
+    charttype: String,
+    chartNum: Number,
   },
 
   data() {

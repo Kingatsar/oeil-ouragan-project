@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/lum', function (req, res, next) {
+router.get('/', function (req, res, next) {
   let json = {
     "id": 1,
     "name": "best group ever",
@@ -20,7 +20,8 @@ router.get('/lum', function (req, res, next) {
         ],
         "times": [
           "2023-02-08T15:41:04.626Z",
-          "2023-02-09T15:41:04.626Z"
+          "2023-03-09T15:41:04.626Z",
+          "2023-04-09T15:4104.626Z"
         ],
         "desc": "feature description",
         "unit": "feature unit"

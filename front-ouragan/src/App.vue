@@ -6,7 +6,11 @@
 
   <div class="graphs">
     <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
-      <ChartCard :charttype="chartType[index]" :chartNum="index"></ChartCard>
+      <ChartCard v-if="loaded" :charttype="chartType[index]" :chartNum="index"
+        :chartDataTemplate="allChartData[value[0]]">
+      </ChartCard>
+      <!--p>{{ allChartData[value[0]] }}</p-->
+
     </div>
   </div>
 
@@ -33,6 +37,7 @@ export default {
   },
   data() {
     return {
+      allChartData: {},
       dataNames: {
         "lum": "lumière",
         "hum": "Humidity",
@@ -52,11 +57,94 @@ export default {
         "line",
         "bar",
 
-      ]
+      ],
+      loaded: false
+      ,
+      localTitle: "test",
+      chartDataLine: {
+        labels: ["this.localTitle", 'February', 'March'],
+        datasets: [
+          {
+
+            data: [40, 20, 12]
+          }
+        ]
+      },
+
+      options: {
+
+        plugins: {
+          title: {
+            display: true,
+            text: this.titre,
+            padding: {
+              top: 10,
+              bottom: 30
+            }
+          }
+        },
 
 
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: true
+            }
+          }],
+          xAxes: [{
+            gridLines: {
+              display: false
+            }
+          }]
+        },
+        legend: {
+          display: true
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      }
     }
+  },
+  async mounted() {
+
+
+    console.log("dfqsfdqsfsqdf");
+
+    const data = await fetch("http://localhost:3000/archive")
+
+    const json = await data.json();
+
+    console.log("ARCHIBEEEEEEEEEEEEEEE");
+    console.log(json);
+    Object.entries(this.dataNames).forEach(([key, value]) => {
+      console.log(key, value)
+
+      console.log(json.measurements.feature.times);
+      this.allChartData[key] = {
+        "labels": json.measurements.feature.times,
+        "datasets": [
+          {
+
+            "data": json.measurements.feature.values
+          }
+        ]
+      }
+    }),
+      console.log("ARCHIBEEEEEEEEEEEEEEE");
+
+    console.log(this.allChartData["lum"]);
+    console.log(this.chartDataBar);
+
+
+
+    this.loaded = true
   }
+
+
+
 
 }
 

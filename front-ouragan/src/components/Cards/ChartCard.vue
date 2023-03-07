@@ -2,28 +2,32 @@
   <div class="chart-card">
     <div class="card" style="width:100%; height:300px;">
       <div class="card-body">
-        <ChartTemplate :type="charttype"></ChartTemplate>
+        <ChartTemplate :type="charttype" :chartData="chartDataTemplate" :chartOptions="chartOptionsTemplate">
+        </ChartTemplate>
       </div>
+      <!--https://vuestic.dev/fr/introduction/overview-->
       <!--va-card-title>{{ name }}</va-card-title-->
       <!--va-date-input v-model="dateStart" manual-input />
       <va-date-input v-model="dateEnd" manual-input /-->
       <div class="card-footer">
         <div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option1"
-              checked>
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="week"
+              v-model="selected" checked>
             <label class="form-check-label" for="inlineRadio1">week</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option2">
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="month"
+              v-model="selected">
             <label class="form-check-label" for="inlineRadio2">month</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="option2">
+            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="year"
+              v-model="selected">
             <label class="form-check-label" for="inlineRadio2">year</label>
           </div>
-          <va-date-input v-model="dateStart" manual-input />
-          <button class="btn btn-primary">refresh</button>
+          <va-date-input v-model="dateEnd" manual-input />
+          <button @click="uniqueArchive()" class="btn btn-primary">refresh</button>
 
         </div>
       </div>
@@ -46,14 +50,35 @@ export default {
     value: String,
     charttype: String,
     chartNum: Number,
+    chartDataTemplate: {
+      type: Object,
+    },
+    chartOptionsTemplate: {
+      type: Object,
+      default: () => { }
+    }
   },
 
   data() {
     return {
-      dateStart: new Date(),
       dateEnd: new Date(),
+      selected: 'week',
+
+
+    }
+
+
+
+  },
+
+  methods: {
+    uniqueArchive() {
+
+
     }
   },
+
+
 };
 </script>
 <style>

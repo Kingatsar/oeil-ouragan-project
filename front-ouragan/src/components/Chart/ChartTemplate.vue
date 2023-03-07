@@ -1,6 +1,6 @@
 <template>
-    <Bar v-if="type == 'bar'" :data="chartDataBar" />
-    <Line v-if="type == 'line'" :data="chartDataLine" />
+    <Bar v-if="type == 'bar'" :data="chartData" :options="chartOptions" />
+    <Line v-if="type == 'line'" :data="chartData" :options="chartOptions" />
 </template>
 
 <script>
@@ -11,31 +11,18 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, 
 
 export default {
     name: 'ChartTemplate',
-    props: { type: String },
-    components: { Bar, Line },
-    data() {
-        return {
-            chartDataBar: {
-                labels: ['January', 'February', 'March'],
-                datasets: [
-                    {
-                        label: 'Data One',
-                        backgroundColor: '#f87979',
-                        data: [40, 20, 12]
-                    }
-                ]
-            },
-
-            chartDataLine: {
-                labels: ['January', 'February', 'March'],
-                datasets: [
-                    {
-
-                        data: [40, 20, 12]
-                    }
-                ]
-            }
+    props: {
+        type: String,
+        chartData: {
+            type: Object,
+            required: true
+        },
+        chartOptions: {
+            type: Object,
+            default: () => { }
         }
-    }
+    },
+    components: { Bar, Line }
 }
+
 </script>

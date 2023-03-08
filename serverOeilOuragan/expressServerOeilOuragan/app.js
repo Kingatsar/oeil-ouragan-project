@@ -7,6 +7,8 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var sensorRouter = require('./routes/sensors_data');
+var liveRouter = require('./routes/live');
+var archiveRouter = require('./routes/archive');
 
 var app = express();
 app.use(cors());
@@ -23,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/sensor', sensorRouter);
+app.use('/live', liveRouter);
+app.use('/archive', archiveRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 
@@ -30,4 +30,4 @@ const sensorSchema = new Schema({
 })
 
 const Sensor = model('Sensor', sensorSchema, 'sensor-collection');
-export default Sensor;
+module.export = Sensor;

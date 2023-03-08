@@ -27,7 +27,7 @@
             <label class="form-check-label" for="inlineRadio2">year</label>
           </div>
           <va-date-input v-model="dateEnd" manual-input />
-          <button @click="uniqueArchive()" class="btn btn-primary">refresh</button>
+          <button @click="uniqueArchive(featureUrlArchive)" class="btn btn-primary">refresh</button>
 
         </div>
       </div>
@@ -50,6 +50,7 @@ export default {
     value: String,
     charttype: String,
     chartNum: Number,
+    featureUrlArchive: String,
     chartDataTemplate: {
       type: Object,
     },
@@ -72,9 +73,8 @@ export default {
   },
 
   methods: {
-    uniqueArchive() {
-
-
+    uniqueArchive(featureUrlArchive) {
+      alert(featureUrlArchive)
     }
   },
 

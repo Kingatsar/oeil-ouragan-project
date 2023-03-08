@@ -17,8 +17,14 @@ import MyCard from '../Cards/Card.vue'
 
 export default {
     name: 'LiveComponent',
+
+    emits: {
+        updatedcount: null,
+    },
+
     data() {
         return {
+            serverDataFromProps: this.server,
             measurements: {},
             url: {
                 "lum": "https://cdn-icons-png.flaticon.com/512/0/370.png",
@@ -32,23 +38,38 @@ export default {
         }
     },
     props: {
-        msg: String
+        msg: String,
+        server: String,
     },
     components: {
         MyCard
     },
 
     created: function () {
-        fetch("http://localhost:3000/live")
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json.measurements);
-                this.measurements = json.measurements;
-            })
+        this.getAlldaData();
+
+        // this.$root.$on('test', (text) => { // here you need to use the arrow function
+        //     console.log(text);
+
+        // })
+
+    },
+
+    methods:
+    {
+        getAlldaData() {
+            console.log("this.serverDataFromProps")
+            console.log(this.serverDataFromProps)
+            fetch(this.serverDataFromProps + "/live")
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json.measurements);
+                    this.measurements = json.measurements;
+                })
+        }
     }
-
-
 }
+
 
 
 </script>

@@ -13,4 +13,5 @@ const gpsNmeaSchema = new Schema({
 })
 
 const GpsNmea = model('GpsNmea', gpsNmeaSchema, 'gpsNmea-collection');
-export default GpsNmea;
+// export default GpsNmea;
+module.export = GpsNmea;

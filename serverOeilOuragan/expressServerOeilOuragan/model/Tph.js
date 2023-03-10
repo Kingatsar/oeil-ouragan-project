@@ -19,4 +19,5 @@ const tphSchema = new Schema({
 })
 
 const Tph = model('Tph', tphSchema, 'tph-collection');
-export default Tph;
+// export default Tph;
+module.export = Tph;

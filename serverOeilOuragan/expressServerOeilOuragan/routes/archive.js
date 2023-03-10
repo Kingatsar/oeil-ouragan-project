@@ -83,6 +83,8 @@ function test(data) {
 }
 
 function storeData(data, feature) {
+    let result;
+    let feature_dim;
     let values = [];
     let times = [];
     let dataParse = JSON.parse(data);
@@ -111,6 +113,36 @@ function storeData(data, feature) {
 
     console.log(values);
     console.log(times);
+
+    if (feature.includes("lum")) {
+        values.push(element.lum);
+    } else if (feature.includes("temp")) {
+        values.push(element.temp);
+    } else if (feature.includes("hum")) {
+        values.push(element.hum);
+    } else if (feature.includes("pre")) {
+        values.push(element.pre);
+    } else if (feature.includes("rain")) {
+        values.push(element.rain);
+    } else if (feature.includes("wind_speed")) {
+        values.push(element.wind_speed);
+    } else if (feature.includes("wind_dir")) {
+        values.push(element.wind_dir);
+    } else if (feature.includes("gps")) {
+        values.push(element.gps);
+    }
+
+
+    result = {
+        id: 28,
+        name: "Oeil d'Ouragan",
+        status: true,
+        measurements: {
+
+
+        }
+    };
+
 
 }
 

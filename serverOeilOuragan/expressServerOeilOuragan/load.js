@@ -13,12 +13,13 @@ import fs from 'fs';
 // insert new data into mongoDB
 const sensors = '/dev/shm/sensors';
 const tphLog = '/dev/shm/tph.log';
-// const rainCounterLog = '/dev/shm/rainCounter.log';;
+const rainCounterLog = '/dev/shm/rainCounter.log';
 const gpsNmea = '/dev/shm/gpsNmea';
 
 watchMyFile(sensors);
 watchMyFile(tphLog);
 watchMyFile(gpsNmea);
+watchMyFile(rainCounterLog);
 
 
 // ------------------------- functions -------------------------//
@@ -45,7 +46,6 @@ function watchMyFile(filePath) {
                 return console.error(err);
             }
             myJSON = dosomething(data, filePath);
-            // console.log(myJSON.date);
 
 
 
@@ -69,22 +69,22 @@ async function dosomething(data, filePath) {
     if (filePath.includes("sensors")) {
 
         dataJSON = changeToJSON(data);
-        console.log(dataJSON.date);
-        console.log(dataJSON.measure[0].value);
         myNewData = createSensor(dataJSON);
 
     }
     if (filePath.includes("tph")) {
 
         dataJSON = changeToJSON(data);
-        console.log(dataJSON.date);
-        console.log(dataJSON.hygro);
         myNewData = createTph(dataJSON);
 
     }
 
     if (filePath.includes("gpsNmea")) {
         myNewData = createGPSNmea(data);
+    }
+
+    if (filePath.includes("rainCounter")) {
+        myNewData = data;
     }
 
     // insert in mongo database
@@ -122,7 +122,6 @@ function createGPSNmea(data) {
     const val = data.toString().split("$");
     const gprmc = '$' + val[2].slice(0, -1);
     const value = nmea.parse(gprmc);
-    console.log(value.loc.geojson.coordinates);
 
     return new GpsNmea({
         lat: value.loc.geojson.coordinates[0],

@@ -2,6 +2,8 @@ const express = require('express');
 const Sensor = require('../model/Sensor');
 const router = express.Router();
 
+const gen = require('../jsonFormatting/generateJSON');
+
 /* GET archive of weather values. */
 router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
     let period = req.params.period;
@@ -32,8 +34,7 @@ router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
         const db = client.db(dbName);
         const collection = db.collection('sensor-collection');
 
-
-        return collection.find().sort({ x: -1 }).limit(5).toArray(function (err, result) {
+        return collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
             if (err) {
                 throw err;
             }
@@ -44,12 +45,13 @@ router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
     }
 
     main()
-        .then(result => res.json({ title: "Data", "mydata": result }))
+        .then((result) => res.json(storeData(JSON.stringify(result), feature)))
         .catch(console.error)
         .finally(() => client.close())
         .then(console.log("connection done"));
 
 
+    // .then(result => res.json({ title: "uzftguzegfuyzeg", "mydata": result }))
 
 
 });
@@ -71,6 +73,47 @@ function getPeriod(endDate, strPeriod) {
     beginDate.setDate(beginDate.getDate() - days);
     return beginDate.toISOString();
 }
+
+function test(data) {
+    let dataParse = JSON.parse(data);
+    let dataJSON = dataParse[0];
+    let dataJSON1 = dataParse[1];
+    console.log(dataJSON);
+    console.log(dataJSON1);
+}
+
+function storeData(data, feature) {
+    let values = [];
+    let times = [];
+    let dataParse = JSON.parse(data);
+    console.log("----------------- test -------------");
+
+    dataParse.forEach(element => {
+        if (feature.includes("lum")) {
+            values.push(element.lum);
+        } else if (feature.includes("temp")) {
+            values.push(element.temp);
+        } else if (feature.includes("hum")) {
+            values.push(element.hum);
+        } else if (feature.includes("pre")) {
+            values.push(element.pre);
+        } else if (feature.includes("rain")) {
+            values.push(element.rain);
+        } else if (feature.includes("wind_speed")) {
+            values.push(element.wind_speed);
+        } else if (feature.includes("wind_dir")) {
+            values.push(element.wind_dir);
+        } else if (feature.includes("gps")) {
+            values.push(element.gps);
+        }
+        times.push(element.time);
+    });
+
+    console.log(values);
+    console.log(times);
+
+}
+
 
 
 

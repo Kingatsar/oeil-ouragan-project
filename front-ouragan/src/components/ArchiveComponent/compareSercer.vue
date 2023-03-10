@@ -1,11 +1,13 @@
 <template>
+  <h1>CompareLive</h1>
   <div class="compareLive">
-    <ChartCard v-if="loaded" charttype='radar' :chartDataTemplate="radaradata" :chartOptionsTemplate="options">
+    <ChartCard v-if="loaded" charttype='radar' :chartDataTemplate="radaraDataFetch" :chartOptionsTemplate="options">
     </ChartCard>
   </div>
 </template>
 
 <script>
+
 import ChartCard from "../Cards/ChartCard.vue"
 export default {
   name: 'compareMeteoLive',
@@ -33,21 +35,7 @@ export default {
         maintainAspectRatio: false
       },
 
-      radaradataFetch: {
-        labels: [
-          "lumière",
-          "Humidity",
-          "Temperature",
-          "Pressure",
-          "Rainfall",
-          "Wind Speed",
-          "Wind Direction"
-        ]
-      }
-
-      ,
-
-      radaradata: {
+      radaraDataFetch: {
         labels: [
           "lumière",
           "Humidity",
@@ -57,28 +45,7 @@ export default {
           "Wind Speed",
           "Wind Direction"
         ],
-        datasets: [
-          {
-            label: 'server1',
-            backgroundColor: 'rgba(179,181,198,0.2)',
-            borderColor: 'rgba(179,181,198,1)',
-            pointBackgroundColor: 'rgba(179,181,198,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(179,181,198,1)',
-            data: [65, 59, 90, 81, 56, 55, 40]
-          },
-          {
-            label: 'server2',
-            backgroundColor: 'rgba(255,99,132,0.2)',
-            borderColor: 'rgba(255,99,132,1)',
-            pointBackgroundColor: 'rgba(255,99,132,1)',
-            pointBorderColor: '#fff',
-            pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(255,99,132,1)',
-            data: [28, 48, 40, 19, 96, 27, 100]
-          }
-        ]
+        datasets: [],
       },
 
 
@@ -108,7 +75,30 @@ export default {
         let resp = await fetch(listServer[i] + "/live");
         // console.log(promise)
         let jsonData = await resp.json()
-        console.log(jsonData)
+        console.log(jsonData);
+        console.log(Object.values(jsonData.measurements));
+        let listdata = [];
+        Object.values(jsonData.measurements).forEach(element => {
+          listdata.push(element.value * (Math.random() + 10))
+
+        });
+        console.log(listdata);
+
+        let colors = this.getRandomRgb();
+
+        this.radaraDataFetch.datasets[i] =
+        {
+          label: jsonData.name,
+          backgroundColor: colors[0],
+          borderColor: colors[1],
+          pointBackgroundColor: colors[1],
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: colors[1],
+          data: listdata
+        }
+
+
 
         this.nbloaded++
 
@@ -118,6 +108,19 @@ export default {
 
       }
 
+      console.log(this.radaraDataFetch)
+
+    }
+    ,
+
+    getRandomRgb() {
+      var num = Math.round(0xffffff * Math.random());
+      var r = num >> 16;
+      var g = num >> 8 & 255;
+      var b = num & 255;
+
+
+      return ['rgb(' + r + ', ' + g + ', ' + b + ', 0.2)', 'rgb(' + r + ', ' + g + ', ' + b + ', 1)'];
     }
   },
 }

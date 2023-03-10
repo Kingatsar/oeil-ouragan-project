@@ -12,6 +12,7 @@
   <LiveComponent msg="Live" :server="selectedServer" />
   <ArchiveComponent :server="selectedServer"></ArchiveComponent>
   <compareMeteoLive></compareMeteoLive>
+  <compareArchivearchiveComponent></compareArchivearchiveComponent>
   <MapCompoment></MapCompoment>
 </template>
 
@@ -22,7 +23,7 @@ import SideBar from './components/Sidebar/sidebar.vue'
 import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
 import MapCompoment from "./components/map.vue"
 import compareMeteoLive from "./components/ArchiveComponent/compareSercer.vue"
-
+import compareArchivearchiveComponent from "./components/ArchiveComponent/compareArchive.vue"
 
 
 export default {
@@ -37,7 +38,8 @@ export default {
     LiveComponent,
     ArchiveComponent,
     MapCompoment,
-    compareMeteoLive
+    compareMeteoLive,
+    compareArchivearchiveComponent
   },
   data() {
     return {

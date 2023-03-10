@@ -68,7 +68,7 @@ export default {
   methods: {
     uniqueArchive(featureUrlArchive) {
       console.log(featureUrlArchive + "/archive/" + this.featureName
-        + "/" + this.selected + "/" + this.dateEnd)
+        + "/" + this.selected + "/" + this.dateEnd.toISOString())
       this.$emit("clickFromChildComponent", { "feature": this.featureName, "period": this.selected, "date": this.dateEnd })
     }
   },

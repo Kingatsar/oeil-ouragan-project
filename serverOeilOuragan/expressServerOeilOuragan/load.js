@@ -103,7 +103,7 @@ function changeToJSON(data) {
 }
 
 function createSensor(dataJson) {
-    return new Sensor({
+    return new Sensor.Sensor({
         time: dataJson.date,
         temp: dataJson.measure[0].value,
         pre: dataJson.measure[1].value,
@@ -116,7 +116,7 @@ function createSensor(dataJson) {
 }
 
 function createTph(dataJson) {
-    return new Tph({
+    return new Tph.Tph({
         time: dataJson.date,
         temp: dataJson.temp,
         hum: dataJson.hygro,
@@ -129,7 +129,7 @@ function createGPSNmea(data) {
     const gprmc = '$' + val[2].slice(0, -1);
     const value = nmea.parse(gprmc);
 
-    return new GpsNmea({
+    return new GpsNmea.GpsNmea({
         lat: value.loc.geojson.coordinates[0],
         long: value.loc.geojson.coordinates[1]
     });
@@ -137,7 +137,7 @@ function createGPSNmea(data) {
 
 function createRainCounter(data) {
     const val = data.toString();
-    return new RainCounter({
+    return new RainCounter.RainCounter({
         time: val
     });
 }

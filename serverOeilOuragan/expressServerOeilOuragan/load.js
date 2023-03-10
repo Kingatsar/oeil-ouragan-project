@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import Sensor from './model/Sensor.js';
 import Tph from './model/Tph.js';
 import GpsNmea from './model/GpsNmea.js';
+import RainCounter from './model/RainCounter.js';
 import nmea from 'node-nmea';
 import fs from 'fs';
 // import * from 'log-timestamp';
@@ -32,10 +33,6 @@ function watchMyFile(filePath) {
     console.log(`Watching for file changes on ${filePath}`);
 
     fs.watchFile(filePath, (curr, prev) => {
-
-        // if (curr.size.valueOf() === prev.size.valueOf()) {
-        //     return;
-        // }
 
         console.log(`${filePath} file Changed`);
 
@@ -84,7 +81,7 @@ async function dosomething(data, filePath) {
     }
 
     if (filePath.includes("rainCounter")) {
-        myNewData = data;
+        myNewData = createRainCounter(data);
     }
 
     // insert in mongo database
@@ -129,4 +126,10 @@ function createGPSNmea(data) {
     });
 }
 
+function createRainCounter(data) {
+    const val = data.toString();
+    return new RainCounter({
+        time: val
+    });
+}
 

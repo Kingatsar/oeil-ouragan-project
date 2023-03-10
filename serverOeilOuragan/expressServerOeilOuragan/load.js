@@ -2,14 +2,23 @@
 // https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/
 // 
 
-import mongoose from 'mongoose';
-import Sensor from './model/Sensor.js';
-import Tph from './model/Tph.js';
-import GpsNmea from './model/GpsNmea.js';
-import RainCounter from './model/RainCounter.js';
-import nmea from 'node-nmea';
-import fs from 'fs';
+// import mongoose from 'mongoose';
+// import Sensor from './model/Sensor.js';
+// import Tph from './model/Tph.js';
+// import GpsNmea from './model/GpsNmea.js';
+// import RainCounter from './model/RainCounter.js';
+// import nmea from 'node-nmea';
+// import fs from 'fs';
 // import * from 'log-timestamp';
+
+const mongoose = require('mongoose');
+const Sensor = require('./model/Sensor.js');
+const Tph = require('./model/Tph.js');
+const GpsNmea = require('./model/GpsNmea.js');
+const RainCounter = require('./model/RainCounter.js');
+const nmea = require('node-nmea');
+const fs = require('fs');
+
 
 // insert new data into mongoDB
 const sensors = '/dev/shm/sensors';
@@ -20,7 +29,7 @@ const gpsNmea = '/dev/shm/gpsNmea';
 watchMyFile(sensors);
 watchMyFile(tphLog);
 watchMyFile(gpsNmea);
-watchMyFile(rainCounterLog);
+// watchMyFile(rainCounterLog);
 
 
 // ------------------------- functions -------------------------//

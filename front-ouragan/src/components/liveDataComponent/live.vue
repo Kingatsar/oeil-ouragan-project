@@ -6,7 +6,7 @@
     <div class="scrollableCard">
         <div v-for="(value, index) in Object.entries(measurements)" :key="index">
             <MyCard v-bind:name="value[1].name" v-bind:unit="value[1].unit" v-bind:value="value[1].value"
-                v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="'http://localhost:3000/live/' + value[0]">
+                v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="serverDataFromProps + '/live/' + value[0]">
             </MyCard>
         </div>
     </div>
@@ -41,18 +41,20 @@ export default {
         msg: String,
         server: String,
     },
+
+    watch: {
+        server: function () {
+            this.serverDataFromProps = this.server;
+            this.getAlldaData();
+
+        }
+    },
     components: {
         MyCard
     },
 
     created: function () {
         this.getAlldaData();
-
-        // this.$root.$on('test', (text) => { // here you need to use the arrow function
-        //     console.log(text);
-
-        // })
-
     },
 
     methods:

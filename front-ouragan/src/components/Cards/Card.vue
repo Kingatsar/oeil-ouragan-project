@@ -48,6 +48,7 @@ export default {
 <style>
 .card {
   margin-right: 10px;
+  color: rgb(0, 0, 0);
 }
 
 .icon-container {

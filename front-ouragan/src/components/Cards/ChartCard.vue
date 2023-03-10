@@ -1,6 +1,6 @@
 <template>
   <div class="chart-card">
-    <div class="card" style="width:100%; height:300px;">
+    <div class="card" style="width:100%; height:100%;">
       <div class="card-body">
         <ChartTemplate :type="charttype" :chartData="chartDataTemplate" :chartOptions="chartOptionsTemplate">
         </ChartTemplate>
@@ -12,18 +12,16 @@
       <div class="card-footer">
         <div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="week"
-              v-model="selected" checked>
+            <input class="form-check-input" type="radio" v-bind:name='featureName' value="week" v-model="selected"
+              checked>
             <label class="form-check-label" for="inlineRadio1">week</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="month"
-              v-model="selected">
+            <input class="form-check-input" type="radio" v-bind:name='featureName' value="month" v-model="selected">
             <label class="form-check-label" for="inlineRadio2">month</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='"inlineRadioOptions" + chartNum' value="year"
-              v-model="selected">
+            <input class="form-check-input" type="radio" v-bind:name='featureName' value="year" v-model="selected">
             <label class="form-check-label" for="inlineRadio2">year</label>
           </div>
           <va-date-input v-model="dateEnd" manual-input />
@@ -49,7 +47,7 @@ export default {
     unit: String,
     value: String,
     charttype: String,
-    chartNum: Number,
+    featureName: String,
     featureUrlArchive: String,
     chartDataTemplate: {
       type: Object,
@@ -64,17 +62,14 @@ export default {
     return {
       dateEnd: new Date(),
       selected: 'week',
-
-
     }
-
-
-
   },
 
   methods: {
     uniqueArchive(featureUrlArchive) {
-      alert(featureUrlArchive)
+      console.log(featureUrlArchive + "/archive/" + this.featureName
+        + "/" + this.selected + "/" + this.dateEnd)
+      this.$emit("clickFromChildComponent", { "feature": this.featureName, "period": this.selected, "date": this.dateEnd })
     }
   },
 
@@ -83,8 +78,8 @@ export default {
 </script>
 <style>
 .chart-card {
-  width: 400px;
-  height: 400px;
+  width: 600px;
+  height: 500px;
   padding: auto;
   margin: 10px;
 }

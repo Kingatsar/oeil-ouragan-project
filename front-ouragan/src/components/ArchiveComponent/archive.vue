@@ -2,8 +2,9 @@
     <h1>Archive</h1>
     <div class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
-            <ChartCard v-if="loaded" :charttype="chartType[index]" :chartNum="index"
-                :chartDataTemplate="allChartData[value[0]]">
+            <ChartCard v-if="loaded" :charttype="chartType[index]" :featureName="value[0]"
+                :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverDataFromProps"
+                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="options">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
@@ -17,8 +18,24 @@ export default {
     components: {
         ChartCard,
     },
+
+    props: {
+        server: String,
+    },
+
+
+    watch: {
+        server: function () {
+            this.serverDataFromProps = this.server;
+            this.getAllData()
+
+        }
+    },
+
+
     data() {
         return {
+            serverDataFromProps: this.server,
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -40,47 +57,29 @@ export default {
                 "bar",
 
             ],
-            loaded: false
-            ,
-            localTitle: "test",
-            chartDataLine: {
-                labels: ["this.localTitle", 'February', 'March'],
-                datasets: [
-                    {
+            loaded: false,
+            nbloaded: 0,
 
-                        data: [40, 20, 12]
-                    }
-                ]
-            },
+            localTitle: "test",
 
             options: {
 
-                plugins: {
-                    title: {
-                        display: true,
-                        text: this.titre,
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
-                    }
-                },
 
 
                 scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: true
-                        }
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            display: false
-                        }
-                    }]
+                    // yAxes: [{
+                    //     ticks: {
+                    //         beginAtZero: true
+                    //     },
+                    //     gridLines: {
+                    //         display: true
+                    //     }
+                    // }],
+                    // xAxes: [{
+                    //     gridLines: {
+                    //         display: false
+                    //     }
+                    // }]
                 },
                 legend: {
                     display: true
@@ -90,39 +89,59 @@ export default {
             }
         }
     },
-    async mounted() {
+    mounted() {
+        this.getAllData();
+    },
+    methods:
+    {
+        handleClickInParent: function (data) {
+            console.log('Event accessed from parent:' + data);
+            this.getOnelData(data.feature)
+        },
+        getAllData() {
+            console.log(Object.keys(this.dataNames).length);
+
+            for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
+                let key = Object.keys(this.dataNames)[i]
+                this.getOnelData(key)
 
 
-        console.log("dfqsfdqsfsqdf");
+            }
 
-        const data = await fetch("http://localhost:3000/archive")
+        },
 
-        const json = await data.json();
+        async getOnelData(key) {
 
-        console.log("ARCHIBEEEEEEEEEEEEEEE");
-        console.log(json);
-        Object.entries(this.dataNames).forEach(([key, value]) => {
-            console.log(key, value)
+            let data = await fetch(this.serverDataFromProps + "/archive")
+
+            let json = await data.json();
+
+            console.log("ARCHIBEEEEEEEEEEEEEEE");
+            console.log(json);
 
             console.log(json.measurements.feature.times);
             this.allChartData[key] = {
                 "labels": json.measurements.feature.times,
                 "datasets": [
                     {
-
+                        label: json.measurements.feature.name,
+                        borderColor: '#05CBE1',
+                        pointBackgroundColor: 'white',
+                        pointBorderColor: 'red',
+                        borderWidth: 1,
                         "data": json.measurements.feature.values
                     }
                 ]
             }
-        }),
-            console.log("ARCHIBEEEEEEEEEEEEEEE");
 
-        console.log(this.allChartData["lum"]);
-        console.log(this.chartDataBar);
+            this.nbloaded++
 
-        this.loaded = true
+            if (this.nbloaded == Object.keys(this.dataNames).length) {
+                this.loaded = true
+            }
+
+        }
     }
-
 
 }
 
@@ -141,13 +160,13 @@ export default {
 
 @media (min-width: 600px) {
     .graphs {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
     }
 }
 
 @media (min-width: 900px) {
     .graphs {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 </style>

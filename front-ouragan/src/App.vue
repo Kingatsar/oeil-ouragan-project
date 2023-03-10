@@ -4,13 +4,14 @@
   <select class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
     v-model="selectedServer" :change="onChange()">
     <option value="http://localhost:3000" selected>localhost:3000</option>
-    <option value="pi@piensg029">pi@piensg029</option>
+    <option value="http://piensg028:3000/sensors">pi@piensg028</option>
     <option value="pi@piensg030">pi@piensg030</option>
   </select>
 
   <SideBar></SideBar>
-  <LiveComponent msg="Live" v-model:server="selectedServer" @changeServer="getAlldaData()" />
-  <ArchiveComponent></ArchiveComponent>
+  <LiveComponent msg="Live" :server="selectedServer" />
+  <ArchiveComponent :server="selectedServer"></ArchiveComponent>
+  <compareMeteoLive></compareMeteoLive>
   <MapCompoment></MapCompoment>
 </template>
 
@@ -20,6 +21,7 @@ import LiveComponent from './components/liveDataComponent/live.vue'
 import SideBar from './components/Sidebar/sidebar.vue'
 import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
 import MapCompoment from "./components/map.vue"
+import compareMeteoLive from "./components/ArchiveComponent/compareSercer.vue"
 
 
 
@@ -34,7 +36,8 @@ export default {
     SideBar,
     LiveComponent,
     ArchiveComponent,
-    MapCompoment
+    MapCompoment,
+    compareMeteoLive
   },
   data() {
     return {
@@ -45,7 +48,6 @@ export default {
   methods: {
     onChange() {
       console.log(this.selectedServer);
-      this.$root.$emit('changeServer', 'new message!');
     },
 
   }
@@ -69,7 +71,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /* color: #2c3e50; */
+  color: white;
   margin-top: 60px;
+
 }
 </style>

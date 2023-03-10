@@ -4,7 +4,7 @@
   <select class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
     v-model="selectedServer" :change="onChange()">
     <option value="http://localhost:3000" selected>localhost:3000</option>
-    <option value="http://piensg028:3000/sensors">pi@piensg028</option>
+    <option value="http://piensg028:3000/sensor">pi@piensg028</option>
     <option value="pi@piensg030">pi@piensg030</option>
   </select>
 

@@ -1,19 +1,19 @@
 <template>
     <div class="live-component">
-        <h1>{{ msg }}</h1>
+        <h1> Live </h1>
     </div>
 
     <div class="scrollableCard">
         <div v-for="(value, index) in Object.entries(measurements)" :key="index">
             <MyCard v-bind:name="value[1].name" v-bind:unit="value[1].unit" v-bind:value="value[1].value"
-                v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="serverDataFromProps + '/live/' + value[0]">
+                v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="serverFromProps + '/live/' + value[0]">
             </MyCard>
         </div>
     </div>
 </template>
 
 <script>
-import MyCard from '../Cards/Card.vue'
+import MyCard from '../Cards/liveCard.vue'
 
 export default {
     name: 'LiveComponent',
@@ -24,7 +24,7 @@ export default {
 
     data() {
         return {
-            serverDataFromProps: this.server,
+            serverFromProps: this.server, //fetch data from the specified server
             measurements: {},
             url: {
                 "lum": "https://cdn-icons-png.flaticon.com/512/0/370.png",
@@ -38,13 +38,13 @@ export default {
         }
     },
     props: {
-        msg: String,
         server: String,
     },
 
     watch: {
+        // watcher fot the param server => if id changes, class the data ser
         server: function () {
-            this.serverDataFromProps = this.server;
+            this.serverFromProps = this.server;
             this.getAlldaData();
 
         }
@@ -59,13 +59,14 @@ export default {
 
     methods:
     {
+        //fetc all live data at once from the specified server
         getAlldaData() {
-            console.log("this.serverDataFromProps")
-            console.log(this.serverDataFromProps)
-            fetch(this.serverDataFromProps + "/live")
+            // console.log("this.serverFromProps")
+            // console.log(this.serverFromProps)
+            fetch(this.serverFromProps + "/live")
                 .then((res) => res.json())
                 .then((json) => {
-                    console.log(json.measurements);
+                    // console.log(json.measurements);
                     this.measurements = json.measurements;
                 })
         }
@@ -73,8 +74,16 @@ export default {
 }
 
 
-
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped src="../../assets/css/card.css"></style>
+<style>
+.scrollableCard {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    border-style: solid;
+    overflow-y: scroll;
+    margin: auto;
+
+}
+</style>

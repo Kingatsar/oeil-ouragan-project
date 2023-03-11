@@ -1,3 +1,13 @@
+# Front: 
+
+## Installation:
+    - clone: git clone https://gitlab.com/kingatsa/oeil-ouragan-project.git
+    - npm install -g @vue/cli (install vue if not exist)
+    - cd ../front-ouragan (go  to this folder in the terminal)
+    - npm install (install dependancies)
+    - npm run serve (run server)
+
+    // to use the mock server, run the mock server on localhost:3000
 
 
 # SERVER
@@ -13,11 +23,8 @@ install nodemon for restarting the node application when file changes i
 Install mongodb for node
 
 #Front:
-    - npm install -g @vue/cli
-    - cd ../front-ouragan
-    - npm install
-    - npm run serve
-#Doc:
-##Front
+
+# Doc:
+## Front
  https://vue-chartjs.org/examples/
 

@@ -91,7 +91,6 @@ export default {
         async getOnelDataPerServer(key) {
 
             const listServer = ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"]
-            const listServerName = ["localhost:3000", "localhost:3001", "localhost:3002", "localhost:3003"]
 
             this.lisOptions.push(
                 {

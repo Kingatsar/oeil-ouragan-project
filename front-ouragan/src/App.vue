@@ -34,7 +34,7 @@
 
 <script>
 
-import LiveComponent from './components/liveDataComponent/live.vue'
+import LiveComponent from './components/live/live.vue'
 import NavbarComponent from './components/navbar/navbar.vue'
 import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
 import MapCompoment from "./components/map.vue"

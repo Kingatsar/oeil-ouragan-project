@@ -9,7 +9,7 @@
       <!--va-card-title>{{ name }}</va-card-title-->
       <!--va-date-input v-model="dateStart" manual-input />
       <va-date-input v-model="dateEnd" manual-input /-->
-      <div class="card-footer">
+      <div v-if="datawithFooter" class="card-footer">
         <div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" v-bind:name='featureName' value="week" v-model="selected"
@@ -25,7 +25,7 @@
             <label class="form-check-label" for="inlineRadio2">year</label>
           </div>
           <va-date-input v-model="dateEnd" manual-input />
-          <button @click="uniqueArchive(featureUrlArchive)" class="btn btn-primary">refresh</button>
+          <button @click="uniqueArchive()" class="btn btn-primary">refresh</button>
 
         </div>
       </div>
@@ -55,20 +55,25 @@ export default {
     chartOptionsTemplate: {
       type: Object,
       default: () => { }
+    },
+    withFooter: {
+      default: true,
+      type: Boolean
     }
   },
 
   data() {
     return {
+      datawithFooter: this.withFooter,
       dateEnd: new Date(),
       selected: 'week',
     }
   },
 
   methods: {
-    uniqueArchive(featureUrlArchive) {
-      console.log(featureUrlArchive + "/archive/" + this.featureName
-        + "/" + this.selected + "/" + this.dateEnd.toISOString())
+    uniqueArchive() {
+      // console.log(featureUrlArchive + "/archive/" + this.featureName
+      //   + "/" + this.selected + "/" + this.dateEnd.toISOString())
       this.$emit("clickFromChildComponent", { "feature": this.featureName, "period": this.selected, "date": this.dateEnd })
     }
   },

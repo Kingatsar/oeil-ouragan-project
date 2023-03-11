@@ -20,11 +20,11 @@
   </div>
 
   <div id="compareLive">
-    <compareMeteoLive></compareMeteoLive>
+    <compareMeteoLive :server="selectedServer"></compareMeteoLive>
   </div>
 
   <div id="compareArchive">
-    <compareArchivearchiveComponent></compareArchivearchiveComponent>
+    <compareArchivearchiveComponent :server="selectedServer"></compareArchivearchiveComponent>
   </div>
 
   <div id="map">
@@ -38,7 +38,7 @@ import LiveComponent from './components/live/live.vue'
 import NavbarComponent from './components/navbar/navbar.vue'
 import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
 import MapCompoment from "./components/map.vue"
-import compareMeteoLive from "./components/ArchiveComponent/compareSercer.vue"
+import compareMeteoLive from "./components/ArchiveComponent/compareLive.vue"
 import compareArchivearchiveComponent from "./components/ArchiveComponent/compareArchive.vue"
 
 

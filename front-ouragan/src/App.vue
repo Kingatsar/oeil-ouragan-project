@@ -1,7 +1,6 @@
 <template>
-  <label></label>
-  <label for="servers">Select Server</label>
-  <select class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
+  <label id="labelSelectServer" for="servers">Select server</label>
+  <select id="selectServer" class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
     v-model="selectedServer" :change="onChange()">
     <option value="http://localhost:3000" selected>localhost:3000</option>
     <option value="http://piensg028:3000/sensor">pi@piensg028</option>
@@ -10,21 +9,36 @@
     <option value="http://piensg029:3000/sensor">pi@piensg029</option>
   </select>
 
-  <SideBar></SideBar>
-  <LiveComponent msg="Live" :server="selectedServer" />
-  <ArchiveComponent :server="selectedServer"></ArchiveComponent>
-  <compareMeteoLive></compareMeteoLive>
-  <compareArchivearchiveComponent></compareArchivearchiveComponent>
-  <MapCompoment></MapCompoment>
+  <NavbarComponent></NavbarComponent>
+
+  <div id="live">
+    <LiveComponent msg="Live" :server="selectedServer" />
+  </div>
+
+  <div id="archive">
+    <ArchiveComponent :server="selectedServer"></ArchiveComponent>
+  </div>
+
+  <div id="compareLive">
+    <compareMeteoLive :server="selectedServer"></compareMeteoLive>
+  </div>
+
+  <div id="compareArchive">
+    <compareArchivearchiveComponent :server="selectedServer"></compareArchivearchiveComponent>
+  </div>
+
+  <div id="map">
+    <MapCompoment></MapCompoment>
+  </div>
 </template>
 
 <script>
 
-import LiveComponent from './components/liveDataComponent/live.vue'
-import SideBar from './components/Sidebar/sidebar.vue'
+import LiveComponent from './components/live/live.vue'
+import NavbarComponent from './components/navbar/navbar.vue'
 import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
 import MapCompoment from "./components/map.vue"
-import compareMeteoLive from "./components/ArchiveComponent/compareSercer.vue"
+import compareMeteoLive from "./components/ArchiveComponent/compareLive.vue"
 import compareArchivearchiveComponent from "./components/ArchiveComponent/compareArchive.vue"
 
 
@@ -36,7 +50,7 @@ export default {
 
 
   components: {
-    SideBar,
+    NavbarComponent,
     LiveComponent,
     ArchiveComponent,
     MapCompoment,
@@ -64,12 +78,6 @@ export default {
 </script>
 
 <style>
-#map {
-  height: 180px;
-}
-
-
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -78,6 +86,14 @@ export default {
   /* color: #2c3e50; */
   color: white;
   margin-top: 60px;
+}
 
+#selectServer {
+  width: fit-content;
+  margin: auto;
+}
+
+#labelSelectServer {
+  font-size: x-large;
 }
 </style>

@@ -42,7 +42,7 @@ export default {
     },
 
     watch: {
-        // watcher fot the param server => if id changes, class the data ser
+        // watcher for the param server => if it changes, get dall data again from the choose server
         server: function () {
             this.serverFromProps = this.server;
             this.getAlldaData();

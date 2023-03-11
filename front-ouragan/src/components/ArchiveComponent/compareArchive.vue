@@ -2,9 +2,9 @@
     <h1>CompareArchive</h1>
     <div class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
-            <ChartCard v-if="loadedServer" :charttype="chartType[index]" :featureName="value[0]"
-                :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverDataFromProps"
-                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="lisOptions[index]">
+            <ChartCard v-if="AllDataloaded" :charttype="chartType[index]" :featureName="value[0]"
+                :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverFromProps"
+                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="lisOptions[index]" :withFooter="true">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
@@ -25,17 +25,18 @@ export default {
 
 
     watch: {
+        // watcher for the param server => if it changes, get dall data again from the choose server
         server: function () {
-            this.serverDataFromProps = this.server;
+            this.serverFromProps = this.server;
             this.getAllData()
-
         }
     },
 
 
     data() {
         return {
-            serverDataFromProps: this.server,
+            serverFromProps: this.server,
+            listServer: ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"],
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -57,10 +58,8 @@ export default {
                 "bar",
 
             ],
-            loadedServer: false,
+            AllDataloaded: false,
             nbLodadedCompareArchive: 0,
-
-            localTitle: "test",
 
             lisOptions: [],
 
@@ -73,31 +72,27 @@ export default {
     methods:
     {
         handleClickInParent: function (data) {
-            console.log('Event accessed from parent:' + data);
-            this.getOnelDataPerServer(data.feature)
+            // alert("fetch data from this api:" + this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+            this.getOneDataPerServer(data, true)
         },
         getAllData() {
-            console.log(Object.keys(this.dataNames).length);
+            // console.log(Object.keys(this.dataNames).length);
 
             for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
                 let key = Object.keys(this.dataNames)[i]
-                this.getOnelDataPerServer(key)
-
-
+                this.getOneDataPerServer({ feature: key }, false)
             }
 
         },
 
-        async getOnelDataPerServer(key) {
-
-            const listServer = ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"]
+        async getOneDataPerServer(data, isUniqueFeature) {
 
             this.lisOptions.push(
                 {
                     plugins: {
                         title: {
                             display: true,
-                            text: this.dataNames[key]
+                            text: this.dataNames[data.feature]
                         }
                     },
                     legend: {
@@ -112,25 +107,37 @@ export default {
 
 
 
-            this.allChartData[key] = {
+            this.allChartData[data.feature] = {
                 "datasets": []
             }
 
-            for (let i = 0; i < listServer.length; i++) {
-
-                let data = await fetch(listServer[i] + "/archive")
-
-                let json = await data.json();
-
-                console.log("ARCHIBEEEEEEEEEEEEEEE");
-                console.log(json);
+            for (let i = 0; i < this.listServer.length; i++) {
 
 
-                console.log(json.measurements.feature.times);
-                this.allChartData[key].labels = json.measurements.feature.times;
 
+                let json = {};
 
-                this.allChartData[key].datasets[i] = (
+                let promiseData;
+
+                if (isUniqueFeature) {
+                    console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+                    promiseData = await fetch(this.listServer[i] + "/archive")
+
+                    json = await promiseData.json();
+
+                }
+                else {
+                    console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
+
+                    promiseData = await fetch(this.listServer[i] + "/archive")
+
+                    json = await promiseData.json();
+
+                }
+
+                this.allChartData[data.feature].labels = json.measurements.feature.times.map(date => new Date(date).toLocaleString());
+
+                this.allChartData[data.feature].datasets[i] = (
                     {
                         label: json.name + i,
                         borderColor: this.getRandomRgb(),
@@ -143,15 +150,10 @@ export default {
 
                 )
 
-                console.log(this.allChartData)
-
-
-
-
                 this.nbLodadedCompareArchive++
 
-                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * listServer.length) {
-                    this.loadedServer = true
+                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * this.listServer.length) {
+                    this.AllDataloaded = true
                 }
 
 

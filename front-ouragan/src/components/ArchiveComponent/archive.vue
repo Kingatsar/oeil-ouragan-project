@@ -4,7 +4,7 @@
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <ChartCard v-if="loaded" :charttype="chartType[index]" :featureName="value[0]"
                 :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverDataFromProps"
-                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="options">
+                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="listOptionsArchive[index]">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
@@ -62,31 +62,7 @@ export default {
 
             localTitle: "test",
 
-            options: {
-
-
-
-                scales: {
-                    // yAxes: [{
-                    //     ticks: {
-                    //         beginAtZero: true
-                    //     },
-                    //     gridLines: {
-                    //         display: true
-                    //     }
-                    // }],
-                    // xAxes: [{
-                    //     gridLines: {
-                    //         display: false
-                    //     }
-                    // }]
-                },
-                legend: {
-                    display: true
-                },
-                responsive: true,
-                maintainAspectRatio: false
-            }
+            listOptionsArchive: []
         }
     },
     mounted() {
@@ -120,6 +96,25 @@ export default {
             console.log(json);
 
             console.log(json.measurements.feature.times);
+
+            this.listOptionsArchive.push(
+                {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: this.dataNames[key]
+                        }
+                    },
+                    legend: {
+                        display: true
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+
+                }
+
+            )
+
             this.allChartData[key] = {
                 "labels": json.measurements.feature.times,
                 "datasets": [

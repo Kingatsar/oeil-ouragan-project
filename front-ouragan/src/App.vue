@@ -1,26 +1,83 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <label></label>
+  <label for="servers">Select Server</label>
+  <select class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
+    v-model="selectedServer" :change="onChange()">
+    <option value="http://localhost:3000" selected>localhost:3000</option>
+    <option value="http://piensg028:3000/sensor">pi@piensg028</option>
+    <option value="http://piensg030:3000/sensor">pi@piensg030</option>
+    <option value="http://piensg027:3000/sensor">pi@piensg027</option>
+    <option value="http://piensg029:3000/sensor">pi@piensg029</option>
+  </select>
+
+  <SideBar></SideBar>
+  <LiveComponent msg="Live" :server="selectedServer" />
+  <ArchiveComponent :server="selectedServer"></ArchiveComponent>
+  <compareMeteoLive></compareMeteoLive>
+  <compareArchivearchiveComponent></compareArchivearchiveComponent>
+  <MapCompoment></MapCompoment>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import LiveComponent from './components/liveDataComponent/live.vue'
+import SideBar from './components/Sidebar/sidebar.vue'
+import ArchiveComponent from "./components/ArchiveComponent/archive.vue"
+import MapCompoment from "./components/map.vue"
+import compareMeteoLive from "./components/ArchiveComponent/compareSercer.vue"
+import compareArchivearchiveComponent from "./components/ArchiveComponent/compareArchive.vue"
+
 
 export default {
   name: 'App',
+  emits: {
+    changeServer: null,
+  },
+
+
   components: {
-    HelloWorld
+    SideBar,
+    LiveComponent,
+    ArchiveComponent,
+    MapCompoment,
+    compareMeteoLive,
+    compareArchivearchiveComponent
+  },
+  data() {
+    return {
+      selectedServer: 'http://localhost:3000',
+    }
+  },
+
+  methods: {
+    onChange() {
+      console.log(this.selectedServer);
+    },
+
   }
 }
+
+
+
+
+
 </script>
 
 <style>
+#map {
+  height: 180px;
+}
+
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /* color: #2c3e50; */
+  color: white;
   margin-top: 60px;
+
 }
 </style>

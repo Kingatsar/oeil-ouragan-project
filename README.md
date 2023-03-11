@@ -1,4 +1,5 @@
 
+
 # SERVER
 1- install expresss
 
@@ -10,3 +11,13 @@ install nodemon for restarting the node application when file changes i
 
 3 install mongo
 Install mongodb for node
+
+#Front:
+    - npm install -g @vue/cli
+    - cd ../front-ouragan
+    - npm install
+    - npm run serve
+#Doc:
+##Front
+ https://vue-chartjs.org/examples/
+

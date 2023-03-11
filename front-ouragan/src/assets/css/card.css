@@ -1,0 +1,13 @@
+.scrollableCard {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    border-style: solid;
+    overflow-y: scroll;
+    margin: auto;
+
+}
+
+body {
+    background-color: rgba(19, 18, 70, 0.966);
+}

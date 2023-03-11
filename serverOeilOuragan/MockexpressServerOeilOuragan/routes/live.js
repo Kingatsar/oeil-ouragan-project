@@ -10,8 +10,8 @@ router.get('/:feature?', function (req, res, next) {
             "id": 1,
             "name": "best group ever",
             "location": {
-                "lat": 0,
-                "long": 0
+                "lat": Math.random() * 45,
+                "long": Math.random() * 45,
             },
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,

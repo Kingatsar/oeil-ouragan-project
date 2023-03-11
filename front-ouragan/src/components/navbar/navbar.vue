@@ -18,7 +18,7 @@
                         <a class="nav-link" href="#compareArchive">Compare Archive</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#map">map</a>
+                        <a class="nav-link" href="#map">Map</a>
                     </li>
                 </ul>
             </div>

@@ -2,9 +2,9 @@
     <h1>CompareArchive</h1>
     <div class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
-            <ChartCard v-if="loaded" :charttype="chartType[index]" :featureName="value[0]"
+            <ChartCard v-if="loadedServer" :charttype="chartType[index]" :featureName="value[0]"
                 :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverDataFromProps"
-                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="options">
+                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="lisOptions[index]">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
@@ -57,36 +57,14 @@ export default {
                 "bar",
 
             ],
-            loaded: false,
+            loadedServer: false,
             nbLodadedCompareArchive: 0,
 
             localTitle: "test",
 
-            options: {
+            lisOptions: [],
 
 
-
-                scales: {
-                    // yAxes: [{
-                    //     ticks: {
-                    //         beginAtZero: true
-                    //     },
-                    //     gridLines: {
-                    //         display: true
-                    //     }
-                    // }],
-                    // xAxes: [{
-                    //     gridLines: {
-                    //         display: false
-                    //     }
-                    // }]
-                },
-                legend: {
-                    display: true
-                },
-                responsive: true,
-                maintainAspectRatio: false
-            }
         }
     },
     mounted() {
@@ -113,6 +91,26 @@ export default {
         async getOnelDataPerServer(key) {
 
             const listServer = ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"]
+            const listServerName = ["localhost:3000", "localhost:3001", "localhost:3002", "localhost:3003"]
+
+            this.lisOptions.push(
+                {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: this.dataNames[key]
+                        }
+                    },
+                    legend: {
+                        display: true
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+
+                }
+
+            )
+
 
 
             this.allChartData[key] = {
@@ -135,7 +133,7 @@ export default {
 
                 this.allChartData[key].datasets[i] = (
                     {
-                        label: json.measurements.feature.name + (Math.random()),
+                        label: json.name + i,
                         borderColor: this.getRandomRgb(),
                         pointBackgroundColor: 'white',
                         pointBorderColor: 'red',
@@ -153,8 +151,8 @@ export default {
 
                 this.nbLodadedCompareArchive++
 
-                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length) {
-                    this.loaded = true
+                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * listServer.length) {
+                    this.loadedServer = true
                 }
 
 

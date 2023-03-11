@@ -5,7 +5,9 @@
     v-model="selectedServer" :change="onChange()">
     <option value="http://localhost:3000" selected>localhost:3000</option>
     <option value="http://piensg028:3000/sensor">pi@piensg028</option>
-    <option value="pi@piensg030">pi@piensg030</option>
+    <option value="http://piensg030:3000/sensor">pi@piensg030</option>
+    <option value="http://piensg027:3000/sensor">pi@piensg027</option>
+    <option value="http://piensg029:3000/sensor">pi@piensg029</option>
   </select>
 
   <SideBar></SideBar>

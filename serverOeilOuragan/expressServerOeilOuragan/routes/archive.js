@@ -33,15 +33,25 @@ router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
 
         const db = client.db(dbName);
         const collection = db.collection('sensor-collection');
+        const collection_loc = db.collection('gpsNmea-collection');
 
-        return collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
+        let myCollec = collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
             if (err) {
                 throw err;
             }
 
-            return result
+            return result;
         });
 
+        let myCollecLoc = collection_loc.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
+            if (err) {
+                throw err;
+            }
+
+            return result;
+        });
+
+        return Promise.all([myCollec, myCollecLoc]);
     }
 
     main()
@@ -49,10 +59,6 @@ router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
         .catch(console.error)
         .finally(() => client.close())
         .then(console.log("connection done"));
-
-
-    // .then(result => res.json({ title: "uzftguzegfuyzeg", "mydata": result }))
-
 
 });
 
@@ -74,23 +80,26 @@ function getPeriod(endDate, strPeriod) {
     return beginDate.toISOString();
 }
 
-function test(data) {
-    let dataParse = JSON.parse(data);
-    let dataJSON = dataParse[0];
-    let dataJSON1 = dataParse[1];
-    console.log(dataJSON);
-    console.log(dataJSON1);
-}
-
 function storeData(data, feature) {
-    let result;
-    let feature_dim;
+
+
     let values = [];
     let times = [];
     let dataParse = JSON.parse(data);
+    let dataJSON = dataParse[0];
+    let dataJSONLoc = dataParse[1];
     console.log("----------------- test -------------");
+    let result = {
+        id: 28,
+        name: "Oeil d'Ouragan",
+        location: {
+            lat: dataJSONLoc[0].lat,
+            long: dataJSONLoc[0].long
+        },
+        status: true,
+    };
 
-    dataParse.forEach(element => {
+    dataJSON.forEach(element => {
         if (feature.includes("lum")) {
             values.push(element.lum);
         } else if (feature.includes("temp")) {
@@ -115,33 +124,64 @@ function storeData(data, feature) {
     console.log(times);
 
     if (feature.includes("lum")) {
-        values.push(element.lum);
+        result["lum"] = {
+            name: "Lum",
+            values: values,
+            times: times,
+            unit: "Lux",
+            desc: "Luminosity"
+        }
     } else if (feature.includes("temp")) {
-        values.push(element.temp);
+        result["temp"] = {
+            name: "Temperature",
+            values: values,
+            times: times,
+            unit: "C",
+            desc: "Temperature"
+        }
     } else if (feature.includes("hum")) {
-        values.push(element.hum);
+        result["hum"] = {
+            name: "Humidity",
+            values: values,
+            times: times,
+            unit: "%",
+            desc: "Humidity"
+        }
     } else if (feature.includes("pre")) {
-        values.push(element.pre);
+        result["pre"] = {
+            name: "Pressure",
+            values: values,
+            times: times,
+            unit: "hPa",
+            desc: "Atm Pressure"
+        }
     } else if (feature.includes("rain")) {
-        values.push(element.rain);
+        result["rain"] = {
+            name: "Rainfall",
+            values: values,
+            times: times,
+            unit: "mm/m²/h",
+            desc: "Rainfall"
+        }
     } else if (feature.includes("wind_speed")) {
-        values.push(element.wind_speed);
+        result["wind_speed"] = {
+            name: "Wind Speed",
+            values: values,
+            times: times,
+            unit: "Kts",
+            desc: "Wind speed in knots"
+        }
     } else if (feature.includes("wind_dir")) {
-        values.push(element.wind_dir);
-    } else if (feature.includes("gps")) {
-        values.push(element.gps);
+        result["wind_dir"] = {
+            name: "Wind Direction",
+            values: values,
+            times: times,
+            unit: "°",
+            desc: "Wind direction in °, as in 360°"
+        }
     }
 
 
-    result = {
-        id: 28,
-        name: "Oeil d'Ouragan",
-        status: true,
-        measurements: {
-
-
-        }
-    };
 
 
 }

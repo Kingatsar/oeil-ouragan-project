@@ -7,7 +7,7 @@
   </div>
 
   <div v-else class="compareLive">
-    <p>live: json api not ok in ont of this server <span style='font-size:20px;'>&#9940;</span></p>
+    <p> json api not ok in one of live server <span style='font-size:20px;'>&#9940;</span></p>
   </div>
 </template>
 

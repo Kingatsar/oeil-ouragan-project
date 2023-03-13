@@ -1,6 +1,6 @@
 <template>
     <h1>CompareArchive</h1>
-    <div class="graphs">
+    <div v-if="jsonOk" class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <ChartCard v-if="AllDataloaded" :charttype="chartType[index]" :featureName="value[0]"
                 :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverFromProps"
@@ -9,6 +9,10 @@
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
+    </div>
+
+    <div v-else class="graphs">
+        <p>archive: json api not ok in one of archive server <span style='font-size:20px;'>&#9940;</span></p>
     </div>
 </template>
 
@@ -39,6 +43,7 @@ export default {
     data() {
         return {
             serverFromProps: this.server,
+            jsonOk: true,
             listServer: ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"],
             allChartData: {},
             dataNames: {
@@ -116,6 +121,10 @@ export default {
                 "datasets": []
             }
 
+
+
+
+
             for (let i = 0; i < this.listServer.length; i++) {
 
 
@@ -125,12 +134,29 @@ export default {
                 let promiseData;
 
                 if (isUniqueFeature) {
-                    console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-                    promiseData = await fetch(this.listServer[i] + "/archive")
+                    try {
+                        console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+                        promiseData = await fetch(this.listServer[i] + "/archive")
+
+                        this.jsonOk = true
+                    }
+                    catch (error) {
+                        "cactch"
+                        this.jsonOk = false
+                    }
                 }
                 else {
-                    console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
-                    promiseData = await fetch(this.listServer[i] + "/archive")
+                    try {
+
+
+                        console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
+                        promiseData = await fetch(this.listServer[i] + "/archive")
+                        this.jsonOk = true
+                    } catch (error) {
+                        "cactch"
+                        this.jsonOk = false
+                    }
+
                 }
 
 
@@ -179,8 +205,10 @@ export default {
 
             }
 
+        }
 
-        },
+
+        ,
 
         getRandomRgb() {
             var num = Math.round(0xffffff * Math.random());

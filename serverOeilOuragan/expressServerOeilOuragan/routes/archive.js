@@ -35,20 +35,18 @@ router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
         const collection = db.collection('sensor-collection');
         const collection_loc = db.collection('gpsNmea-collection');
 
-        let myCollec = collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
+        let myCollec = collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).toArray(function (err, result) {
             if (err) {
                 throw err;
             }
-
             return result;
         });
 
-        let myCollecLoc = collection_loc.find({ time: { $gt: beginDate, $lt: endDatetime } }).limit(5).toArray(function (err, result) {
+        let myCollecLoc = collection_loc.find().sort({ x: -1 }).limit(1).toArray(function (err, result) {
             if (err) {
                 throw err;
             }
-
-            return result;
+            return result
         });
 
         return Promise.all([myCollec, myCollecLoc]);
@@ -66,7 +64,10 @@ function getPeriod(endDate, strPeriod) {
 
     let beginDate = new Date(endDate);
     let days;
-    if (strPeriod.includes('week')) {
+    if (strPeriod.includes('day')) {
+        days = 1;
+    }
+    else if (strPeriod.includes('week')) {
         days = 7;
     }
     else if (strPeriod.includes('month')) {
@@ -82,13 +83,13 @@ function getPeriod(endDate, strPeriod) {
 
 function storeData(data, feature) {
 
-
+    let count = 0;
     let values = [];
     let times = [];
     let dataParse = JSON.parse(data);
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
-    console.log("----------------- test -------------");
+    console.log("----------------- testing  fzioeuhf -------------");
     let result = {
         id: 28,
         name: "Oeil d'Ouragan",
@@ -100,6 +101,7 @@ function storeData(data, feature) {
     };
 
     dataJSON.forEach(element => {
+        count++;
         if (feature.includes("lum")) {
             values.push(element.lum);
         } else if (feature.includes("temp")) {
@@ -119,9 +121,6 @@ function storeData(data, feature) {
         }
         times.push(element.time);
     });
-
-    console.log(values);
-    console.log(times);
 
     if (feature.includes("lum")) {
         result["lum"] = {
@@ -181,48 +180,11 @@ function storeData(data, feature) {
         }
     }
 
+    console.log(count);
 
-
-
+    return result;
 }
 
 
-
-
-// const { MongoClient } = require('mongodb');
-// // or as an es module:
-// // import { MongoClient } from 'mongodb'
-
-// // Connection URL
-// const url = 'mongodb://localhost:27017';
-// const client = new MongoClient(url);
-
-// // Database Name
-// const dbName = 'test';
-
-// async function main() {
-//     // Use connect method to connect to the server
-//     await client.connect();
-//     console.log('Connected successfully to server');
-
-//     const db = client.db(dbName);
-//     const collection = db.collection('sensor-collection');
-
-//     // Search in collection
-//     return collection.find().toArray(function (err, result) {
-//         if (err) {
-//             throw err;
-//         }
-//         return result
-//         //res.json({title:"Data", "mydata":result})
-//     });
-
-// }
-
-// main()
-//     .then(result => res.json({ title: "Data", "mydata": result }))
-//     .catch(console.error)
-//     .finally(() => client.close())
-//     .then(console.log("connection done"));
 
 module.exports = router;

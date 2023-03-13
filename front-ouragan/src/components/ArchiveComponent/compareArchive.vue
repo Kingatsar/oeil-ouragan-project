@@ -4,7 +4,8 @@
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <ChartCard v-if="AllDataloaded" :charttype="chartType[index]" :featureName="value[0]"
                 :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverFromProps"
-                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="lisOptions[index]" :withFooter="true">
+                @clickFromChildComponent="handleClickInParentComp" :chartOptionsTemplate="lisOptions[index]"
+                :withFooter="true">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
@@ -28,6 +29,8 @@ export default {
         // watcher for the param server => if it changes, get dall data again from the choose server
         server: function () {
             this.serverFromProps = this.server;
+            this.AllDataloaded = false
+            console.log("switch server to " + this.serverFromProps)
             this.getAllData()
         }
     },
@@ -71,9 +74,11 @@ export default {
     },
     methods:
     {
-        handleClickInParent: function (data) {
+        handleClickInParentComp(data) {
             // alert("fetch data from this api:" + this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-            this.getOneDataPerServer(data, true)
+            // this.nbLodadedCompareArchive = 0;
+            this.AllDataloaded = false,
+                this.getOneDataPerServer(data, true)
         },
         getAllData() {
             // console.log(Object.keys(this.dataNames).length);
@@ -122,18 +127,16 @@ export default {
                 if (isUniqueFeature) {
                     console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
                     promiseData = await fetch(this.listServer[i] + "/archive")
-
-                    json = await promiseData.json();
-
                 }
                 else {
                     console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
-
                     promiseData = await fetch(this.listServer[i] + "/archive")
-
-                    json = await promiseData.json();
-
                 }
+
+
+
+
+                json = await promiseData.json();
 
                 this.allChartData[data.feature].labels = json.measurements.feature.times.map(date => new Date(date).toLocaleString());
 
@@ -152,8 +155,25 @@ export default {
 
                 this.nbLodadedCompareArchive++
 
-                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * this.listServer.length) {
-                    this.AllDataloaded = true
+                console.log(this.nbLodadedCompareArchive)
+                console.log(this.listServer.length)
+
+                if (!isUniqueFeature) {
+
+                    if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * this.listServer.length) {
+                        this.AllDataloaded = true
+                        this.nbLodadedCompareArchive = 0;
+                    }
+                }
+
+                else {
+                    if (this.nbLodadedCompareArchive == this.listServer.length) {
+                        this.AllDataloaded = true
+                        console.log("this.listServer.length")
+
+                        this.nbLodadedCompareArchive = 0;
+
+                    }
                 }
 
 

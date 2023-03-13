@@ -1,6 +1,6 @@
 <template>
     <h1>Archive</h1>
-    <div class="graphs">
+    <div v-if="jsonOk" class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <!-- we wait that all data are fetched before diplaying them-->
             <ChartCard v-if="dataLoaded" :charttype="chartType[index]" :featureName="value[0]"
@@ -10,6 +10,10 @@
             <!-- vue fetched data-->
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
+    </div>
+
+    <div v-else class="graphs">
+        <p>{{ apiUrl }}: json api not ok <span style='font-size:20px;'>&#9940;</span></p>
     </div>
 </template>
 
@@ -38,8 +42,10 @@ export default {
 
     data() {
         return {
+            apiUrl: "",
             serverFromProps: this.server,
             allChartData: {},
+            jsonOk: false,
             dataNames: {
                 "lum": "lumière",
                 "hum": "Humidity",
@@ -81,41 +87,57 @@ export default {
         },
         getAllData() {
             // console.log(Object.keys(this.dataNames).length);
-            for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
-                let feature = Object.keys(this.dataNames)[i]
-                let apiUrl = this.serverFromProps + "/archive/" + "week" + "/" + feature + "/" + new Date().toISOString()
-                this.getOneDataFromArchive(feature, apiUrl)
+            try {
+                for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
+                    let feature = Object.keys(this.dataNames)[i]
+                    let apiUrl = this.serverFromProps + "/archive/" + "week" + "/" + feature + "/" + new Date().toISOString()
+                    this.getOneDataFromArchive(feature, apiUrl)
+
+                }
+                this.jsonOk = true
+
             }
+            catch (error) {
+                this.jsonOk = false
+
+            }
+
 
         },
 
         async getOneDataFromArchive(feature, apiUrl) {
-            console.log(apiUrl);
-            let data = await fetch(this.serverFromProps + "/archive")
-            let json = await data.json();
-            // console.log("ARCHIBEEEEEEEEEEEEEEE");
-            // console.log(json);
-            // console.log(json.measurements.feature.times);
+            try {
+                console.log(apiUrl);
+                this.apiUrl = apiUrl;
+                let data = await fetch(this.serverFromProps + "/archive")
+                let json = await data.json();
+                // console.log("ARCHIBEEEEEEEEEEEEEEE");
+                // console.log(json);
+                // console.log(json.measurements.feature.times);
 
-            //store chart data in allChartData 
-            this.allChartData[feature] = {
-                "labels": json.measurements.feature.times.map(date => new Date(date).toLocaleString()),
-                "datasets": [
-                    {
-                        label: json.measurements.feature.name,
-                        borderColor: '#05CBE1',
-                        pointBackgroundColor: 'white',
-                        pointBorderColor: 'red',
-                        borderWidth: 1,
-                        "data": json.measurements.feature.values
-                    }
-                ]
-            }
-            this.nbDataLoaded++
-            if (this.nbDataLoaded == Object.keys(this.dataNames).length) {
-                this.dataLoaded = true
-            }
+                //store chart data in allChartData 
+                this.allChartData[feature] = {
+                    "labels": json.measurements.feature.times.map(date => new Date(date).toLocaleString()),
+                    "datasets": [
+                        {
+                            label: json.measurements.feature.name,
+                            borderColor: '#05CBE1',
+                            pointBackgroundColor: 'white',
+                            pointBorderColor: 'red',
+                            borderWidth: 1,
+                            "data": json.measurements.feature.values
+                        }
+                    ]
+                }
+                this.nbDataLoaded++
+                if (this.nbDataLoaded == Object.keys(this.dataNames).length) {
+                    this.dataLoaded = true
+                }
 
+            }
+            catch (error) {
+                this.jsonOk = false
+            }
         }
     }
 

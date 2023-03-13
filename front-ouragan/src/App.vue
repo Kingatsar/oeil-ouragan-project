@@ -3,6 +3,7 @@
   <select id="selectServer" class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
     v-model="selectedServer" :change="onChange()">
     <option value="http://localhost:3000" selected>localhost:3000</option>
+    <option value="http://localhost:3001" selected>localhost:3001</option>
     <option value="http://piensg028:3000/sensor">pi@piensg028</option>
     <option value="http://piensg030:3000/sensor">pi@piensg030</option>
     <option value="http://piensg027:3000/sensor">pi@piensg027</option>

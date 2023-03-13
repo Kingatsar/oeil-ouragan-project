@@ -1,9 +1,13 @@
 <template>
   <h1>CompareLive</h1>
-  <div class="compareLive">
+  <div v-if="jsonOk" class="compareLive">
     <ChartCard v-if="dataLoaded" charttype='radar' :chartDataTemplate="radaraDataFetch" :chartOptionsTemplate="options"
       :withFooter="false">
     </ChartCard>
+  </div>
+
+  <div v-else class="compareLive">
+    <p>live: json api not ok in ont of this server <span style='font-size:20px;'>&#9940;</span></p>
   </div>
 </template>
 
@@ -17,9 +21,10 @@ export default {
   },
   data() {
     return {
-
+      listServer: ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"],
       nbDataLoaded: 0,
       dataLoaded: false,
+      jsonOk: true,
 
       options: {
         legend: {
@@ -55,38 +60,45 @@ export default {
   methods:
   {
     async getAlldaDataFormComparaison() {
-      const listServer = ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"]
-      for (let i = 0; i < listServer.length; i++) {
+      try {
 
-        let resp = await fetch(listServer[i] + "/live");
+        for (let i = 0; i < this.listServer.length; i++) {
 
-        let jsonData = await resp.json()
-        let listdata = [];
-        Object.values(jsonData.measurements).forEach(element => {
-          listdata.push(element.value * (Math.random()))
+          let resp = await fetch(this.listServer[i] + "/live");
 
-        });
-        let colors = this.getRandomRgb();
-        this.radaraDataFetch.datasets[i] =
-        {
-          label: jsonData.name,
-          backgroundColor: colors[0],
-          borderColor: colors[1],
-          pointBackgroundColor: colors[1],
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: colors[1],
-          data: listdata
+          let jsonData = await resp.json()
+          let listdata = [];
+          Object.values(jsonData.measurements).forEach(element => {
+            listdata.push(element.value * (Math.random()))
+
+          });
+          let colors = this.getRandomRgb();
+          this.radaraDataFetch.datasets[i] =
+          {
+            label: jsonData.name,
+            backgroundColor: colors[0],
+            borderColor: colors[1],
+            pointBackgroundColor: colors[1],
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: colors[1],
+            data: listdata
+          }
+
+          this.nbDataLoaded++
+          if (this.nbDataLoaded == this.listServer.length) {
+            this.dataLoaded = true
+          }
+
         }
-
-        this.nbDataLoaded++
-        if (this.nbDataLoaded == listServer.length) {
-          this.dataLoaded = true
-        }
+        this.jsonOk = true;
 
       }
-    }
-    ,
+      catch (error) {
+        this.jsonOk = false;
+      }
+
+    },
 
     getRandomRgb() {
       var num = Math.round(0xffffff * Math.random());

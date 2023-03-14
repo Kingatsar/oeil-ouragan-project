@@ -41,7 +41,7 @@ export default {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            let listServer = ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"]
+            let listServer = ["http://localhost:3000", "http://piensg027:3000", "http://piensg028:3000"]
 
             let sondeIcon = L.icon({
                 iconUrl: require("@/assets/sonde.png"),
@@ -65,9 +65,7 @@ export default {
                         marker.bindPopup(groupName).openPopup();
 
                     })
-
             }
-
         }
 
     }

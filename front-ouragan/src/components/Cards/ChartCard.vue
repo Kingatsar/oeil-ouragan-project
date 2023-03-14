@@ -12,17 +12,21 @@
       <div v-if="datawithFooter" class="card-footer">
         <div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='featureName' value="week" v-model="selected"
-              checked>
+            <input class="form-check-input" type="radio" v-bind:name='featureName' value="day" v-model="selected">
+            <label class="form-check-label" for="inlineRadio0">day</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" v-bind:name='featureName' value="week" v-model="selected">
             <label class="form-check-label" for="inlineRadio1">week</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" v-bind:name='featureName' value="month" v-model="selected">
-            <label class="form-check-label" for="inlineRadio2">month</label>
+            <label class="form-check-label" for="inlineRadio3">month</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" v-bind:name='featureName' value="year" v-model="selected">
-            <label class="form-check-label" for="inlineRadio2">year</label>
+            <label class="form-check-label" for="inlineRadio4">year</label>
           </div>
           <va-date-input v-model="dateEnd" manual-input />
           <button @click="uniqueArchive()" class="btn btn-primary">refresh</button>
@@ -66,7 +70,7 @@ export default {
     return {
       datawithFooter: this.withFooter,
       dateEnd: new Date(),
-      selected: 'week',
+      selected: 'day',
     }
   },
 

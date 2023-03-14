@@ -44,7 +44,7 @@ export default {
         return {
             serverFromProps: this.server,
             jsonOk: true,
-            listServer: ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"],
+            listServer: ["http://piensg027:3000"],
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -136,8 +136,7 @@ export default {
                 if (isUniqueFeature) {
                     try {
                         console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-                        promiseData = await fetch(this.listServer[i] + "/archive")
-
+                        promiseData = await fetch(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "?endDateTime=" + new Date(data.date).toISOString())
                         this.jsonOk = true
                     }
                     catch (error) {
@@ -147,10 +146,8 @@ export default {
                 }
                 else {
                     try {
-
-
-                        console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
-                        promiseData = await fetch(this.listServer[i] + "/archive")
+                        console.log(this.listServer[i] + "/archive/" + "day" + "/" + data.feature + "/" + new Date().toISOString())
+                        promiseData = await fetch(this.listServer[i] + "/archive/" + "day" + "/" + data.feature)
                         this.jsonOk = true
                     } catch (error) {
                         "cactch"
@@ -164,7 +161,7 @@ export default {
 
                 json = await promiseData.json();
 
-                this.allChartData[data.feature].labels = json.measurements.feature.times.map(date => new Date(date).toLocaleString());
+                this.allChartData[data.feature].labels = json.measurements[data.feature].times.map(date => new Date(date).toLocaleString());
 
                 this.allChartData[data.feature].datasets[i] = (
                     {
@@ -173,7 +170,7 @@ export default {
                         pointBackgroundColor: 'white',
                         pointBorderColor: 'red',
                         borderWidth: 1,
-                        "data": json.measurements.feature.values.map(x => x * Math.random() * 2)
+                        "data": json.measurements[data.feature].values.map(x => x * Math.random() * 2)
                     }
 
 

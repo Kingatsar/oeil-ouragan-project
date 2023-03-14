@@ -81,16 +81,13 @@ export default {
     methods:
     {
         handleClickInParent: function (data) {
-            // console.log('Event accessed from parent:' + data);
-            alert("fetch data from this api:" + this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-            this.getOneDataFromArchive(data.feature, this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+            this.getOneDataFromArchive(data.feature, this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "?endDateTime=" + new Date(data.date).toISOString())
         },
         getAllData() {
-            // console.log(Object.keys(this.dataNames).length);
             try {
                 for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
                     let feature = Object.keys(this.dataNames)[i]
-                    let apiUrl = this.serverFromProps + "/archive/" + "week" + "/" + feature + "/" + new Date().toISOString()
+                    let apiUrl = this.serverFromProps + "/archive/" + "day" + "/" + feature
                     this.getOneDataFromArchive(feature, apiUrl)
 
                 }
@@ -109,29 +106,26 @@ export default {
             try {
                 console.log(apiUrl);
                 this.apiUrl = apiUrl;
-                let data = await fetch(this.serverFromProps + "/archive")
+                let data = await fetch(apiUrl)
                 let json = await data.json();
-                // console.log("ARCHIBEEEEEEEEEEEEEEE");
-                // console.log(json);
-                // console.log(json.measurements.feature.times);
-
                 //store chart data in allChartData 
                 this.allChartData[feature] = {
-                    "labels": json.measurements.feature.times.map(date => new Date(date).toLocaleString()),
+                    "labels": json.measurements[feature].times.map(date => new Date(date).toLocaleString()),
                     "datasets": [
                         {
-                            label: json.measurements.feature.name,
+                            label: json.measurements[feature].name,
                             borderColor: '#05CBE1',
                             pointBackgroundColor: 'white',
                             pointBorderColor: 'red',
                             borderWidth: 1,
-                            "data": json.measurements.feature.values
+                            "data": json.measurements[feature].values
                         }
                     ]
                 }
                 this.nbDataLoaded++
                 if (this.nbDataLoaded == Object.keys(this.dataNames).length) {
                     this.dataLoaded = true
+                    this.nbDataLoaded = 0;
                 }
 
             }

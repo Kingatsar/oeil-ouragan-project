@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/:period/:feature', function (req, res, next) {
   let json = {
     "id": 1,
     "name": "best group ever",

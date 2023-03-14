@@ -15,9 +15,6 @@ router.get('/:period/:feature', function (req, res, next) {
         endDatetime = new Date().toISOString();
     }
     const beginDate = getPeriod(endDatetime, period);
-    console.log('-------------- Date --------------');
-    console.log("endDate: " + endDatetime);
-    console.log("beginDate: " + beginDate);
 
     const { MongoClient, ConnectionCheckOutFailedEvent } = require('mongodb');
     // or as an es module:
@@ -77,9 +74,6 @@ function getPeriod(endDate, strPeriod) {
     else if (strPeriod.includes('month')) {
         days = 30;
     }
-    else if (strPeriod.includes('year')) {
-        days = 365;
-    }
 
     beginDate.setDate(beginDate.getDate() - days);
     return beginDate.toISOString();
@@ -93,7 +87,6 @@ function storeData(data, feature, period) {
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
     let filtered;
-    console.log("----------------- testing  fzioeuhf -------------");
     let result = {
         id: 28,
         name: "Oeil d'Ouragan",
@@ -128,8 +121,6 @@ function storeData(data, feature, period) {
     filtered = filterValues(values, times, period);
     values = filtered[0];
     times = filtered[1];
-    console.log(values);
-    console.log(times);
 
     if (feature.includes("lum")) {
         result["measurements"] = {
@@ -228,8 +219,7 @@ function getIdxInterval(listOfDuplicated) {
     }
 
     listIndices.push(listOfDuplicated.length - 1);
-    console.log('------------------ getIdxInterval ------------------');
-    console.log(listIndices);
+
     return listIndices;
 }
 
@@ -266,7 +256,6 @@ function filterValues(listValues, listTimes, period) {
         listIndices = getIdxInterval(sliceTime(listTimes, 10));
     }
 
-    console.log(' ----------- filterValues -----------');
     for (let i = 0; i < (listIndices.length - 1); i++) {
         slicedList = sliceList(listValues, listIndices[i], listIndices[i + 1]);
         if (period.includes('day') || period.includes('month')) {
@@ -280,9 +269,6 @@ function filterValues(listValues, listTimes, period) {
             filteredValue.push(meanArray(slicedList2));
         }
     }
-
-    console.log(' ----------- listIndices ----------- ');
-    console.log(listIndices);
 
     listIndices.pop();
     listIndices.forEach(element => {

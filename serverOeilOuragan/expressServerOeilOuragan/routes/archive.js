@@ -3,8 +3,8 @@ const Sensor = require('../model/Sensor');
 const router = express.Router();
 
 const gen = require('../jsonFormatting/generateJSON');
+const mongoose = require('mongoose');
 
-// /:endDatetime?
 /* GET archive of weather values. */
 router.get('/:period/:feature', function (req, res, next) {
     let period = req.params.period;
@@ -57,7 +57,7 @@ router.get('/:period/:feature', function (req, res, next) {
     }
 
     main()
-        .then((result) => res.json(storeData(JSON.stringify(result), feature)))
+        .then((result) => res.json(storeData(JSON.stringify(result), feature, period)))
         .catch(console.error)
         .finally(() => client.close())
         .then(console.log("connection done"));
@@ -85,13 +85,14 @@ function getPeriod(endDate, strPeriod) {
     return beginDate.toISOString();
 }
 
-function storeData(data, feature) {
+function storeData(data, feature, period) {
 
     let values = [];
     let times = [];
     let dataParse = JSON.parse(data);
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
+    let filtered;
     console.log("----------------- testing  fzioeuhf -------------");
     let result = {
         id: 28,
@@ -123,6 +124,25 @@ function storeData(data, feature) {
         }
         times.push(element.time);
     });
+
+
+    if (period.includes('day')) {
+        console.log('------------ listTimes ------------');
+        filtered = filterValuesDay(values, times);
+        values = filtered[0];
+        times = filtered[1];
+        console.log(values);
+        console.log(times);
+    }
+    else if (period.includes('week')) {
+
+    }
+    else if (period.includes('month')) {
+
+    }
+    else if (period.includes('year')) {
+
+    }
 
     if (feature.includes("lum")) {
         result["lum"] = {
@@ -183,9 +203,71 @@ function storeData(data, feature) {
     }
 
 
+
+
     return result;
 }
 
+function sliceTime(listTimes, idx) {
+    // idx 13 for hours
+    // idx 10 for days
+    listTimes.forEach((element, index) => {
+        listTimes[index] = element.slice(0, idx);
+    })
+    return listTimes;
+}
 
+function getIdxInterval(listOfDuplicated) {
+    let value = listOfDuplicated[0];
+    let listIndices = [0];
+
+    for (let i = 1; i < listOfDuplicated.length; i++) {
+        if (!listOfDuplicated[i].includes(value)) {
+
+            value = listOfDuplicated[i];
+            listIndices.push(i);
+        }
+    }
+
+    listIndices.push(listOfDuplicated.length);
+    return listIndices;
+}
+
+function sliceList(myList, startIdx, endIdx) {
+    let listSlice = myList.slice(startIdx, endIdx);
+
+    return listSlice;
+}
+
+function meanArray(myList) {
+    let myMean = 0;
+
+    myList.forEach(element => {
+        myMean += Number(element);
+    });
+
+    return myMean / myList.length;
+}
+
+function filterValuesDay(listValues, listTimes) {
+    let filteredValue = [];
+    let filteredTimes = [];
+    let slicedList;
+    let listIndices = getIdxInterval(sliceTime(listTimes, 13));
+
+    for (let i = 0; i < (listIndices.length - 1); i++) {
+        slicedList = sliceList(listValues, listIndices[i], listIndices[i + 1]);
+
+        filteredValue.push(meanArray(slicedList));
+    }
+
+    listIndices.forEach(element => {
+        filteredTimes.push(listTimes[element]);
+    })
+
+    filteredTimes.pop();
+
+    return [filteredValue, filteredTimes];
+}
 
 module.exports = router;

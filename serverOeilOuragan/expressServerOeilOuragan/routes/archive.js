@@ -11,12 +11,15 @@ router.get('/:period/:feature', function (req, res, next) {
     let feature = req.params.feature;
     let endDatetime = req.query.endDateTime;
 
+    if (!endDatetime) {
+        endDatetime = new Date().toISOString();
+    }
     const beginDate = getPeriod(endDatetime, period);
     console.log('-------------- Date --------------');
     console.log("endDate: " + endDatetime);
     console.log("beginDate: " + beginDate);
 
-    const { MongoClient } = require('mongodb');
+    const { MongoClient, ConnectionCheckOutFailedEvent } = require('mongodb');
     // or as an es module:
     // import { MongoClient } from 'mongodb'
 

@@ -125,21 +125,6 @@ function storeData(data, feature, period) {
         times.push(element.time);
     });
 
-
-    // if (period.includes('day')) {
-    //     console.log('------------ listTimes ------------');
-
-    // }
-    // else if (period.includes('week')) {
-
-    // }
-    // else if (period.includes('month')) {
-
-    // }
-    // else if (period.includes('year')) {
-
-    // }
-
     filtered = filterValues(values, times, period);
     values = filtered[0];
     times = filtered[1];
@@ -147,60 +132,74 @@ function storeData(data, feature, period) {
     console.log(times);
 
     if (feature.includes("lum")) {
-        result["lum"] = {
-            name: "Lum",
-            values: values,
-            times: times,
-            unit: "Lux",
-            desc: "Luminosity"
+        result["measurements"] = {
+            lum: {
+                name: "Lum",
+                values: values,
+                times: times,
+                unit: "Lux",
+                desc: "Luminosity"
+            }
         }
     } else if (feature.includes("temp")) {
-        result["temp"] = {
-            name: "Temperature",
-            values: values,
-            times: times,
-            unit: "C",
-            desc: "Temperature"
+        result["measurements"] = {
+            temp: {
+                name: "Temperature",
+                values: values,
+                times: times,
+                unit: "C",
+                desc: "Temperature"
+            }
         }
     } else if (feature.includes("hum")) {
-        result["hum"] = {
-            name: "Humidity",
-            values: values,
-            times: times,
-            unit: "%",
-            desc: "Humidity"
+        result["measurements"] = {
+            hum: {
+                name: "Humidity",
+                values: values,
+                times: times,
+                unit: "%",
+                desc: "Humidity"
+            }
         }
     } else if (feature.includes("pre")) {
-        result["pre"] = {
-            name: "Pressure",
-            values: values,
-            times: times,
-            unit: "hPa",
-            desc: "Atm Pressure"
+        result["measurements"] = {
+            pre: {
+                name: "Pressure",
+                values: values,
+                times: times,
+                unit: "hPa",
+                desc: "Atm Pressure"
+            }
         }
     } else if (feature.includes("rain")) {
-        result["rain"] = {
-            name: "Rainfall",
-            values: values,
-            times: times,
-            unit: "mm/m²/h",
-            desc: "Rainfall"
+        result["measurements"] = {
+            rain: {
+                name: "Rainfall",
+                values: values,
+                times: times,
+                unit: "mm/m²/h",
+                desc: "Rainfall"
+            }
         }
     } else if (feature.includes("wind_speed")) {
-        result["wind_speed"] = {
-            name: "Wind Speed",
-            values: values,
-            times: times,
-            unit: "Kts",
-            desc: "Wind speed in knots"
+        result["measurements"] = {
+            wind_speed: {
+                name: "Wind Speed",
+                values: values,
+                times: times,
+                unit: "Kts",
+                desc: "Wind speed in knots"
+            }
         }
     } else if (feature.includes("wind_dir")) {
-        result["wind_dir"] = {
-            name: "Wind Direction",
-            values: values,
-            times: times,
-            unit: "°",
-            desc: "Wind direction in °, as in 360°"
+        result["measurements"] = {
+            wind_dir: {
+                name: "Wind Direction",
+                values: values,
+                times: times,
+                unit: "°",
+                desc: "Wind direction in °, as in 360°"
+            }
         }
     }
 
@@ -282,13 +281,13 @@ function filterValues(listValues, listTimes, period) {
 
             filteredValue.push(meanArray(slicedList1));
             filteredValue.push(meanArray(slicedList2));
-
         }
     }
 
     console.log(' ----------- listIndices ----------- ');
     console.log(listIndices);
-    listIndices.pop()
+
+    listIndices.pop();
     listIndices.forEach(element => {
         if (period.includes('day')) {
             filteredTimes.push(listTimes[element]);

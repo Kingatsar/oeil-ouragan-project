@@ -3,12 +3,16 @@
         <h1> Live </h1>
     </div>
 
-    <div class="scrollableCard">
+    <div v-if="jsonOk" class="scrollableCard">
         <div v-for="(value, index) in Object.entries(measurements)" :key="index">
             <MyCard v-bind:name="value[1].name" v-bind:unit="value[1].unit" v-bind:value="value[1].value"
                 v-bind:imageUrl="url[value[0]]" v-bind:uniqueLiveUrl="serverFromProps + '/live/' + value[0]">
             </MyCard>
         </div>
+    </div>
+
+    <div v-else class="scrollableCard">
+        <p>{{ serverFromProps }} /live: json api not ok <span style='font-size:20px;'>&#9940;</span></p>
     </div>
 </template>
 
@@ -26,6 +30,7 @@ export default {
         return {
             serverFromProps: this.server, //fetch data from the specified server
             measurements: {},
+            jsonOk: "false",
             url: {
                 "lum": "https://cdn-icons-png.flaticon.com/512/0/370.png",
                 "hum": "https://static.thenounproject.com/png/1512650-200.png",
@@ -63,13 +68,23 @@ export default {
         getAlldaData() {
             // console.log("this.serverFromProps")
             // console.log(this.serverFromProps)
+
             fetch(this.serverFromProps + "/live")
                 .then((res) => res.json())
                 .then((json) => {
                     // console.log(json.measurements);
                     this.measurements = json.measurements;
+                    this.jsonOk = true;
                 })
+                .catch(
+                    this.jsonOk = false
+                )
         }
+
+
+
+
+
     }
 }
 

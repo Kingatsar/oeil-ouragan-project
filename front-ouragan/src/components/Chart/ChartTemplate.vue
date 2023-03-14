@@ -1,7 +1,7 @@
 <template>
-    <Bar v-if="type == 'bar'" :data="chartData" :options="chartOptions" />
-    <Line v-if="type == 'line'" :data="chartData" :options="chartOptions" />
-    <Radar v-if="type == 'radar'" :data="chartData" :options="chartOptions" />
+    <Bar v-if="type == 'bar'" :data="localChartData" :options="localChartOptions" />
+    <Line v-if="type == 'line'" :data="localChartData" :options="localChartOptions" />
+    <Radar v-if="type == 'radar'" :data="localChartData" :options="localChartOptions" />
 </template>
 
 <script>
@@ -23,7 +23,25 @@ export default {
             default: () => { }
         }
     },
-    components: { Bar, Line, Radar }
+    components: { Bar, Line, Radar },
+
+    watch: {
+        chartData: function () {
+            this.localChartData = this.chartData
+
+        },
+        chartOptions: function () {
+            this.localChartOptions = this.chartOptions
+        }
+
+    },
+
+    data() {
+        return {
+            localChartData: this.chartData,
+            localChartOptions: this.chartOptions,
+        }
+    }
 }
 
 </script>

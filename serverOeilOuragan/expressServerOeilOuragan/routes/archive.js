@@ -126,23 +126,25 @@ function storeData(data, feature, period) {
     });
 
 
-    if (period.includes('day')) {
-        console.log('------------ listTimes ------------');
-        filtered = filterValuesDay(values, times);
-        values = filtered[0];
-        times = filtered[1];
-        console.log(values);
-        console.log(times);
-    }
-    else if (period.includes('week')) {
+    // if (period.includes('day')) {
+    //     console.log('------------ listTimes ------------');
 
-    }
-    else if (period.includes('month')) {
+    // }
+    // else if (period.includes('week')) {
 
-    }
-    else if (period.includes('year')) {
+    // }
+    // else if (period.includes('month')) {
 
-    }
+    // }
+    // else if (period.includes('year')) {
+
+    // }
+
+    filtered = filterValues(values, times, period);
+    values = filtered[0];
+    times = filtered[1];
+    console.log(values);
+    console.log(times);
 
     if (feature.includes("lum")) {
         result["lum"] = {
@@ -229,7 +231,9 @@ function getIdxInterval(listOfDuplicated) {
         }
     }
 
-    listIndices.push(listOfDuplicated.length);
+    listIndices.push(listOfDuplicated.length - 1);
+    console.log('------------------ getIdxInterval ------------------');
+    console.log(listIndices);
     return listIndices;
 }
 
@@ -249,23 +253,51 @@ function meanArray(myList) {
     return myMean / myList.length;
 }
 
-function filterValuesDay(listValues, listTimes) {
+
+
+function filterValues(listValues, listTimes, period) {
     let filteredValue = [];
     let filteredTimes = [];
     let slicedList;
-    let listIndices = getIdxInterval(sliceTime(listTimes, 13));
+    let slicedList1;
+    let slicedList2;
+    let listIndices;
+    let midIdx;
 
-    for (let i = 0; i < (listIndices.length - 1); i++) {
-        slicedList = sliceList(listValues, listIndices[i], listIndices[i + 1]);
-
-        filteredValue.push(meanArray(slicedList));
+    if (period.includes('day')) {
+        listIndices = getIdxInterval(sliceTime(listTimes, 13));
+    } else if (period.includes('week') || period.includes('month')) {
+        listIndices = getIdxInterval(sliceTime(listTimes, 10));
     }
 
+    console.log(' ----------- filterValues -----------');
+    for (let i = 0; i < (listIndices.length - 1); i++) {
+        slicedList = sliceList(listValues, listIndices[i], listIndices[i + 1]);
+        if (period.includes('day')) {
+            filteredValue.push(meanArray(slicedList));
+        } else if (period.includes('week')) {
+            midIdx = (listIndices[i] + listIndices[i + 1]) / 2;
+            slicedList1 = sliceList(slicedList, listIndices[i], midIdx);
+            slicedList2 = sliceList(slicedList, midIdx, listIndices[i + 1]);
+
+            filteredValue.push(meanArray(slicedList1));
+            filteredValue.push(meanArray(slicedList2));
+
+        }
+    }
+
+    console.log(' ----------- listIndices ----------- ');
+    console.log(listIndices);
+    listIndices.pop()
     listIndices.forEach(element => {
-        filteredTimes.push(listTimes[element]);
+        if (period.includes('day')) {
+            filteredTimes.push(listTimes[element]);
+        } else if (period.includes('week')) {
+            filteredTimes.push(listTimes[element] + " AM ");
+            filteredTimes.push(listTimes[element] + " PM ");
+        }
     })
 
-    filteredTimes.pop();
 
     return [filteredValue, filteredTimes];
 }

@@ -97,7 +97,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "lum": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",
@@ -120,7 +120,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "hum": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",
@@ -166,7 +166,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "pre": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",
@@ -189,7 +189,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "rain": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",
@@ -212,7 +212,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "wind_speed": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",
@@ -236,7 +236,7 @@ router.get('/:feature?', function (req, res, next) {
             "time": "2023-02-08T15:41:04.626Z",
             "status": true,
             "measurements": {
-                "temp": {
+                "wind_dir": {
                     "name": "Temperature",
                     "value": Math.floor(Math.random() * 20),
                     "unit": "C",

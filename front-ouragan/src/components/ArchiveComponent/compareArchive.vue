@@ -1,13 +1,18 @@
 <template>
     <h1>CompareArchive</h1>
-    <div class="graphs">
+    <div v-if="jsonOk" class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <ChartCard v-if="AllDataloaded" :charttype="chartType[index]" :featureName="value[0]"
                 :chartDataTemplate="allChartData[value[0]]" :featureUrlArchive="serverFromProps"
-                @clickFromChildComponent="handleClickInParent" :chartOptionsTemplate="lisOptions[index]" :withFooter="true">
+                @clickFromChildComponent="handleClickInParentComp" :chartOptionsTemplate="lisOptions[index]"
+                :withFooter="true">
             </ChartCard>
             <!--p>{{ allChartData[value[0]] }}</p-->
         </div>
+    </div>
+
+    <div v-else class="graphs">
+        <p>archive: json api not ok in one of archive server <span style='font-size:20px;'>&#9940;</span></p>
     </div>
 </template>
 
@@ -28,6 +33,8 @@ export default {
         // watcher for the param server => if it changes, get dall data again from the choose server
         server: function () {
             this.serverFromProps = this.server;
+            this.AllDataloaded = false
+            console.log("switch server to " + this.serverFromProps)
             this.getAllData()
         }
     },
@@ -36,7 +43,8 @@ export default {
     data() {
         return {
             serverFromProps: this.server,
-            listServer: ["http://localhost:3000", "http://localhost:3000", "http://localhost:3000", "http://localhost:3000"],
+            jsonOk: true,
+            listServer: ["http://piensg027:3000"],
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -71,9 +79,11 @@ export default {
     },
     methods:
     {
-        handleClickInParent: function (data) {
+        handleClickInParentComp(data) {
             // alert("fetch data from this api:" + this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-            this.getOneDataPerServer(data, true)
+            // this.nbLodadedCompareArchive = 0;
+            this.AllDataloaded = false,
+                this.getOneDataPerServer(data, true)
         },
         getAllData() {
             // console.log(Object.keys(this.dataNames).length);
@@ -111,6 +121,10 @@ export default {
                 "datasets": []
             }
 
+
+
+
+
             for (let i = 0; i < this.listServer.length; i++) {
 
 
@@ -120,22 +134,34 @@ export default {
                 let promiseData;
 
                 if (isUniqueFeature) {
-                    console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
-                    promiseData = await fetch(this.listServer[i] + "/archive")
-
-                    json = await promiseData.json();
-
+                    try {
+                        console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+                        promiseData = await fetch(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "?endDateTime=" + new Date(data.date).toISOString())
+                        this.jsonOk = true
+                    }
+                    catch (error) {
+                        "cactch"
+                        this.jsonOk = false
+                    }
                 }
                 else {
-                    console.log(this.listServer[i] + "/archive/" + "week" + "/" + data.feature + "/" + new Date().toISOString())
-
-                    promiseData = await fetch(this.listServer[i] + "/archive")
-
-                    json = await promiseData.json();
+                    try {
+                        console.log(this.listServer[i] + "/archive/" + "day" + "/" + data.feature + "/" + new Date().toISOString())
+                        promiseData = await fetch(this.listServer[i] + "/archive/" + "day" + "/" + data.feature)
+                        this.jsonOk = true
+                    } catch (error) {
+                        "cactch"
+                        this.jsonOk = false
+                    }
 
                 }
 
-                this.allChartData[data.feature].labels = json.measurements.feature.times.map(date => new Date(date).toLocaleString());
+
+
+
+                json = await promiseData.json();
+
+                this.allChartData[data.feature].labels = json.measurements[data.feature].times.map(date => new Date(date).toLocaleString());
 
                 this.allChartData[data.feature].datasets[i] = (
                     {
@@ -144,7 +170,7 @@ export default {
                         pointBackgroundColor: 'white',
                         pointBorderColor: 'red',
                         borderWidth: 1,
-                        "data": json.measurements.feature.values.map(x => x * Math.random() * 2)
+                        "data": json.measurements[data.feature].values.map(x => x * Math.random() * 2)
                     }
 
 
@@ -152,15 +178,34 @@ export default {
 
                 this.nbLodadedCompareArchive++
 
-                if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * this.listServer.length) {
-                    this.AllDataloaded = true
+                console.log(this.nbLodadedCompareArchive)
+                console.log(this.listServer.length)
+
+                if (!isUniqueFeature) {
+
+                    if (this.nbLodadedCompareArchive == Object.keys(this.dataNames).length * this.listServer.length) {
+                        this.AllDataloaded = true
+                        this.nbLodadedCompareArchive = 0;
+                    }
+                }
+
+                else {
+                    if (this.nbLodadedCompareArchive == this.listServer.length) {
+                        this.AllDataloaded = true
+                        console.log("this.listServer.length")
+
+                        this.nbLodadedCompareArchive = 0;
+
+                    }
                 }
 
 
             }
 
+        }
 
-        },
+
+        ,
 
         getRandomRgb() {
             var num = Math.round(0xffffff * Math.random());

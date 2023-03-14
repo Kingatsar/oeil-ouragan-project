@@ -4,11 +4,12 @@ const router = express.Router();
 
 const gen = require('../jsonFormatting/generateJSON');
 
+// /:endDatetime?
 /* GET archive of weather values. */
-router.get('/:period/:feature/:endDatetime?', function (req, res, next) {
+router.get('/:period/:feature', function (req, res, next) {
     let period = req.params.period;
     let feature = req.params.feature;
-    let endDatetime = req.params.endDatetime;
+    let endDatetime = req.query.endDateTime;
 
     const beginDate = getPeriod(endDatetime, period);
     console.log('-------------- Date --------------');
@@ -83,7 +84,6 @@ function getPeriod(endDate, strPeriod) {
 
 function storeData(data, feature) {
 
-    let count = 0;
     let values = [];
     let times = [];
     let dataParse = JSON.parse(data);
@@ -101,7 +101,6 @@ function storeData(data, feature) {
     };
 
     dataJSON.forEach(element => {
-        count++;
         if (feature.includes("lum")) {
             values.push(element.lum);
         } else if (feature.includes("temp")) {
@@ -180,7 +179,6 @@ function storeData(data, feature) {
         }
     }
 
-    console.log(count);
 
     return result;
 }

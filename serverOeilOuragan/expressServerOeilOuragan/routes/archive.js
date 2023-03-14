@@ -203,9 +203,6 @@ function storeData(data, feature, period) {
         }
     }
 
-
-
-
     return result;
 }
 
@@ -272,7 +269,7 @@ function filterValues(listValues, listTimes, period) {
     console.log(' ----------- filterValues -----------');
     for (let i = 0; i < (listIndices.length - 1); i++) {
         slicedList = sliceList(listValues, listIndices[i], listIndices[i + 1]);
-        if (period.includes('day')) {
+        if (period.includes('day') || period.includes('month')) {
             filteredValue.push(meanArray(slicedList));
         } else if (period.includes('week')) {
             midIdx = (listIndices[i] + listIndices[i + 1]) / 2;
@@ -290,10 +287,12 @@ function filterValues(listValues, listTimes, period) {
     listIndices.pop();
     listIndices.forEach(element => {
         if (period.includes('day')) {
-            filteredTimes.push(listTimes[element]);
+            filteredTimes.push(listTimes[element] + ":00:00.000Z");
         } else if (period.includes('week')) {
-            filteredTimes.push(listTimes[element] + " AM ");
-            filteredTimes.push(listTimes[element] + " PM ");
+            filteredTimes.push(listTimes[element] + "T00:00:00.000Z");
+            filteredTimes.push(listTimes[element] + "T13:00:00.000Z");
+        } else if (period.includes('month')) {
+            filteredTimes.push(listTimes[element] + "T00:00:00.000Z");
         }
     })
 

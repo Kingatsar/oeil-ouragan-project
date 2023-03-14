@@ -76,7 +76,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.lum
+            measurements: {
+                lum: liveJSON.measurements.lum
+            }
         }
     } else if (feature.includes("temp")) {
         result = {
@@ -85,7 +87,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.temp
+            measurements: {
+                temp: liveJSON.measurements.temp
+            }
         }
     } else if (feature.includes("hum")) {
         result = {
@@ -94,7 +98,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.hum
+            measurements: {
+                hum: liveJSON.measurements.hum
+            }
         }
     } else if (feature.includes("pre")) {
         result = {
@@ -103,7 +109,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.pre
+            measurements: {
+                pre: liveJSON.measurements.pre
+            }
         }
     } else if (feature.includes("rain")) {
         result = {
@@ -112,7 +120,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.rain
+            measurements: {
+                rain: liveJSON.measurements.rain
+            }
         }
     } else if (feature.includes("wind_speed")) {
         result = {
@@ -121,7 +131,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.wind_speed
+            measurements: {
+                wind_speed: liveJSON.measurements.wind_speed
+            }
         }
     } else if (feature.includes("wind_dir")) {
         result = {
@@ -130,7 +142,9 @@ const generateJSONFeature = function (data, feature) {
             location: liveJSON.location,
             time: liveJSON.time,
             status: liveJSON.status,
-            measurements: liveJSON.measurements.wind_dir
+            measurements: {
+                wind_dir: liveJSON.measurements.wind_dir
+            }
         }
     } else if (feature.includes("gps")) {
         result = {

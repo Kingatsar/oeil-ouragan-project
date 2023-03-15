@@ -243,8 +243,8 @@ function computeRainArchive(dataJSONRain, period) {
         let idxIntervalWeek = getIdxInterval(sliceWeek);
         for (let i = 0; i < idxIntervalWeek.length - 1; i++) {
             midIdx = (idxIntervalWeek[i] + idxIntervalWeek[i + 1]) / 2;
-            slicedList1 = sliceList(resultVal, listIndices[i], midIdx);
-            slicedList2 = sliceList(resultVal, midIdx, listIndices[i + 1]);
+            slicedList1 = sliceList(resultVal, idxIntervalWeek[i], midIdx);
+            slicedList2 = sliceList(resultVal, midIdx, idxIntervalWeek[i + 1]);
 
             valueWeek.push(meanArray(slicedList1));
             valueWeek.push(meanArray(slicedList2));

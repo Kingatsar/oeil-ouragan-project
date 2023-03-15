@@ -51,7 +51,7 @@ router.get('/:period/:feature', function (req, res, next) {
             return result
         });
 
-        let myCollecRain = collection_rain.find({ time: { $gt: dateHourBefore, $lt: dateNow } }).toArray(function (err, result) {
+        let myCollecRain = collection_rain.find({ time: { $gt: beginDate, $lt: endDatetime } }).toArray(function (err, result) {
             if (err) {
                 throw err;
             }

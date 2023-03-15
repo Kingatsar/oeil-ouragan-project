@@ -133,7 +133,7 @@ function storeData(data, feature, period) {
     times = filtered[1];
 
     // Rain 
-    let rainValtime = computeRainArchive(dataJSONRain);
+    let rainValtime = computeRainArchive(dataJSONRain, period);
     let rainVal = rainValtime[0];
     let rainTime = rainValtime[1];
 
@@ -212,33 +212,71 @@ function storeData(data, feature, period) {
     return result;
 }
 
-function computeRainArchive(dataJSONRain) {
+function computeRainArchive(dataJSONRain, period) {
     let myVal = [];
     let resultVal = [];
     let resultTimes = [];
+    let myValSliced;
+    let idxValInterval;
+    let midIdx;
+
     dataJSONRain.forEach(element => {
         myVal.push(element.time);
     })
 
     console.log('---------------- computeRainArchive ----------------');
-    // console.log(myVal);
-    // console.log(resultVal);
-    // console.log(resultTimes);
-
-    let myValSliced = sliceTime(myVal, 13);
-    let idxValInterval = getIdxInterval(myValSliced);
-
+    myValSliced = sliceTime(myVal, 13);
+    idxValInterval = getIdxInterval(myValSliced);
     for (let i = 0; i < idxValInterval.length - 1; i++) {
         resultVal.push((idxValInterval[i + 1] - idxValInterval[i]) * 0.3274);
     }
 
-    idxValInterval.pop();
-    idxValInterval.forEach(element => {
-        resultTimes.push(myVal[element] + ":00:00.000Z");
-    })
+    if (period.includes("day")) {
+        idxValInterval.pop();
+        idxValInterval.forEach(element => {
+            resultTimes.push(myVal[element] + ":00:00.000Z");
+        })
+    } else if (period.includes("week")) {
+        let valueWeek = [];
+        let timesWeek = [];
+        let sliceWeek = sliceTime(myValSliced, 10);
+        let idxIntervalWeek = getIdxInterval(sliceWeek);
+        for (let i = 0; i < idxIntervalWeek.length - 1; i++) {
+            midIdx = (idxIntervalWeek[i] + idxIntervalWeek[i + 1]) / 2;
+            slicedList1 = sliceList(resultVal, listIndices[i], midIdx);
+            slicedList2 = sliceList(resultVal, midIdx, listIndices[i + 1]);
+
+            valueWeek.push(meanArray(slicedList1));
+            valueWeek.push(meanArray(slicedList2));
+        }
+        idxIntervalWeek.pop()
+        idxIntervalWeek.forEach(element => {
+            timesWeek.push(myVal[element] + "T00:00:00.000Z");
+            timesWeek.push(myVal[element] + "T13:00:00.000Z");
+        })
+        resultTimes = timesWeek;
+        resultVal = valueWeek;
+    } else if (period.includes("month")) {
+        let sliceMonth = sliceTime(myValSliced, 10);
+        let idxIntervalMonth = getIdxInterval(sliceMonth);
+        let slicedList;
+        let valueMonth = [];
+        let timesMonth = [];
+        for (let i = 0; i < (idxIntervalMonth.length - 1); i++) {
+            slicedList = sliceList(resultVal, idxIntervalMonth[i], idxIntervalMonth[i + 1]);
+            valueMonth.push(meanArray(sliceList));
+        }
+        idxIntervalMonth.pop()
+        idxIntervalMonth.forEach(element => {
+            timesMonth.push(myVal[element] + "T00:00:00.000Z");
+        })
+
+        resultVal = valueMonth;
+        resultTimes = timesMonth;
+    }
 
     console.log(resultVal);
-    console.log(resultTimes);	
+    console.log(resultTimes);
 
     return [resultVal, resultTimes];
 }

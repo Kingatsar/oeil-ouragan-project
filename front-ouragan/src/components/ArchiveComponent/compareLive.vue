@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      listServer: ["http://localhost:3000", "http://piensg027:3000", "http://piensg028:3000"],
+      listServer: ["http://piensg027:3000", "http://piensg028:3000"],
       nbDataLoaded: 0,
       dataLoaded: false,
       jsonOk: true,
@@ -59,9 +59,9 @@ export default {
 
   methods:
   {
+    //pour chaque server, on va récupérer les données live. Async est exigée par vue chart pour l'affiche utlisant un api
     async getAlldaDataFormComparaison() {
       try {
-
         for (let i = 0; i < this.listServer.length; i++) {
 
           let resp = await fetch(this.listServer[i] + "/live");
@@ -99,7 +99,7 @@ export default {
       }
 
     },
-
+    // colorisation random des chart pour chaque groupe
     getRandomRgb() {
       var num = Math.round(0xffffff * Math.random());
       var r = num >> 16;

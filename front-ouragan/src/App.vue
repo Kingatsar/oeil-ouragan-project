@@ -2,12 +2,13 @@
   <label id="labelSelectServer" for="servers">Select server</label>
   <select id="selectServer" class="form-select" @change="changeServer" aria-label="Default select example" name="servers"
     v-model="selectedServer" :change="onChange()">
-    <option value="http://localhost:3000" selected>localhost:3000</option>
-    <option value="http://localhost:3001" selected>localhost:3001</option>
+    <option value="http://localhost:3000">localhost:3000</option>
+    <option value="http://localhost:3001">localhost:3001</option>
+    <option value="http://piensg027:3000" selected>pi@piensg027</option>
     <option value="http://piensg028:3000">pi@piensg028</option>
     <option value="http://piensg030:3000">pi@piensg030</option>
-    <option value="http://piensg027:3000">pi@piensg027</option>
-    <option value="http://piensg029:3000">pi@piensg029</option>
+    <option value="http://piensg031:3000">pi@piensg031</option>
+    <option value="http://piensg032:3000">pi@piensg032</option>
   </select>
 
   <NavbarComponent></NavbarComponent>
@@ -60,7 +61,7 @@ export default {
   },
   data() {
     return {
-      selectedServer: 'http://localhost:3000',
+      selectedServer: 'http://piensg028:3000',
     }
   },
 

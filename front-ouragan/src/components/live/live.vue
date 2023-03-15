@@ -1,6 +1,6 @@
 <template>
     <div class="live-component">
-        <h1> Live </h1>
+        <h1> Live: {{ groupeName }}</h1>
     </div>
 
     <div v-if="jsonOk" class="scrollableCard">
@@ -28,6 +28,7 @@ export default {
 
     data() {
         return {
+            groupeName: "",
             serverFromProps: this.server, //fetch data from the specified server
             measurements: {},
             jsonOk: "false",
@@ -73,6 +74,7 @@ export default {
                 .then((res) => res.json())
                 .then((json) => {
                     // console.log(json.measurements);
+                    this.groupeName = json.name;
                     this.measurements = json.measurements;
                     this.jsonOk = true;
                 })

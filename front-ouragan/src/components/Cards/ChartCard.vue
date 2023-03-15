@@ -24,10 +24,6 @@
             <input class="form-check-input" type="radio" v-bind:name='featureName' value="month" v-model="selected">
             <label class="form-check-label" for="inlineRadio3">month</label>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" v-bind:name='featureName' value="year" v-model="selected">
-            <label class="form-check-label" for="inlineRadio4">year</label>
-          </div>
           <va-date-input v-model="dateEnd" manual-input />
           <button @click="uniqueArchive()" class="btn btn-primary">refresh</button>
 

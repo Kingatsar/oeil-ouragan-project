@@ -10,14 +10,9 @@ router.get('/:feature?', function (req, res, next) {
     const dateHourBefore = new Date();
     dateHourBefore.setHours(dateHourBefore.getHours() - 1);
 
-    console.log(' ------------ time ------------ ');
-    console.log(dateNow);
-    console.log(dateHourBefore);
 
     let feat = req.params.feature;
-    console.log(" ----------- feat -----------");
-    console.log(feat != undefined);
-    console.log('get value for live');
+
     const { MongoClient } = require('mongodb');
 
     // Connection URL

@@ -224,7 +224,6 @@ function computeRainArchive(dataJSONRain, period) {
         myVal.push(element.time);
     })
 
-    console.log('---------------- computeRainArchive ----------------');
     myValSliced = sliceTime(myVal, 13);
     idxValInterval = getIdxInterval(myValSliced);
     for (let i = 0; i < idxValInterval.length - 1; i++) {
@@ -274,9 +273,6 @@ function computeRainArchive(dataJSONRain, period) {
         resultVal = valueMonth;
         resultTimes = timesMonth;
     }
-
-    console.log(resultVal);
-    console.log(resultTimes);
 
     return [resultVal, resultTimes];
 }

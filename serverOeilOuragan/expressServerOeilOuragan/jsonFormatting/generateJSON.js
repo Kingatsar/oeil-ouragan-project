@@ -7,8 +7,6 @@ const generateJSONLive = function (data) {
     let dataJSONLoc = dataParse[1];
     let dataJSONRain = dataParse[2];
     let rainValue;
-    console.log(' ---------- generateJSONLive ---------- ');
-    console.log(dataJSONRain.length);
 
     if (dataJSONRain.length == 0) {
         rainValue = 0;
@@ -76,7 +74,6 @@ const generateJSONLive = function (data) {
 
 const generateJSONFeature = function (data, feature) {
     /*  feature String */
-    console.log(" ----------- generateJSONFeature ----------- ")
     let result;
     liveJSON = generateJSONLive(data);
     if (feature.includes("lum")) {

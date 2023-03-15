@@ -217,11 +217,11 @@ function computeRainArchive(dataJSONRain) {
     let resultVal = [];
     let resultTimes = [];
     dataJSONRain.forEach(element => {
-        myVal.push(element);
+        myVal.push(element.time);
     })
 
     console.log('---------------- computeRainArchive ----------------');
-    console.log(myVal);
+    // console.log(myVal);
     // console.log(resultVal);
     // console.log(resultTimes);
 
@@ -229,15 +229,16 @@ function computeRainArchive(dataJSONRain) {
     let idxValInterval = getIdxInterval(myValSliced);
 
     for (let i = 0; i < idxValInterval.length - 1; i++) {
-        result.push((idxValInterval[i + 1] - idxValInterval[i]) * 0.3274);
+        resultVal.push((idxValInterval[i + 1] - idxValInterval[i]) * 0.3274);
     }
 
     idxValInterval.pop();
     idxValInterval.forEach(element => {
-        resultTimes.push(myVal[element] + "T00:00:00.000Z");
+        resultTimes.push(myVal[element] + ":00:00.000Z");
     })
 
-
+    console.log(resultVal);
+    console.log(resultTimes);	
 
     return [resultVal, resultTimes];
 }

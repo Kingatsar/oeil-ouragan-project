@@ -55,9 +55,15 @@ router.get('/:feature?', function (req, res, next) {
             return result
         });
 
+        let myCollecRain = collection_rain.find({ time: { $gt: dateHourBefore, $lt: dateNow } }).toArray(function (err, result) {
+            if (err) {
+                throw err;
+            }
+            return result;
+        });
 
 
-        return Promise.all([myCollec, myCollecLoc]);
+        return Promise.all([myCollec, myCollecLoc, myCollecRain]);
     }
 
     //generateJSONFeature(data, feature)

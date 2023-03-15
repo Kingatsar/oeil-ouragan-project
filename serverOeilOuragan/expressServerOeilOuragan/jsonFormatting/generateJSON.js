@@ -5,7 +5,11 @@ const generateJSONLive = function (data) {
     let dataParse = JSON.parse(data);
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
-
+    let dataJSONRain = dataParse[2];
+    console.log(' ---------- generateJSONLive ---------- ');
+    console.log(dataParse);
+    console.log(dataJSON);
+    console.log(dataJSONLoc);
     result = {
         id: 28,
         name: "Oeil d'Ouragan",
@@ -42,7 +46,7 @@ const generateJSONLive = function (data) {
             },
             rain: {
                 name: "Rainfall",
-                value: 0,
+                value: computeRainFall(dataJSONRain),
                 unit: "mm/m²/h",
                 desc: "Rainfall"
             },
@@ -160,5 +164,12 @@ const generateJSONFeature = function (data, feature) {
 
 };
 
+function computeRainFall(dataJSONRain) {
+    let count = 0;
+    dataJSONRain.forEach(element => {
+        count++;
+    });
+    return count * 0.3274;
+}
 
 module.exports = { generateJSONLive, generateJSONFeature };

@@ -7,9 +7,7 @@ const generateJSONLive = function (data) {
     let dataJSONLoc = dataParse[1];
     let dataJSONRain = dataParse[2];
     console.log(' ---------- generateJSONLive ---------- ');
-    console.log(dataParse);
-    console.log(dataJSON);
-    console.log(dataJSONLoc);
+    console.log(dataJSONRain.lentgh);
     result = {
         id: 28,
         name: "Oeil d'Ouragan",

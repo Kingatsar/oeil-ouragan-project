@@ -41,7 +41,7 @@ export default {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            let listServer = ["http://localhost:3000", "http://piensg027:3000", "http://piensg028:3000"]
+            let listServer = ["http://piensg031:3000", "http://piensg027:3000", "http://piensg028:3000"]
 
             let sondeIcon = L.icon({
                 iconRetinaUrl: require('@/assets/sonde.png'),
@@ -58,7 +58,7 @@ export default {
                 fetch(listServer[i] + "/live")
                     .then((res) => res.json())
                     .then((json) => {
-                        console.log(json.measurements);
+                        // console.log(json.measurements);
                         let lon = json.location["long"];
                         let lat = json.location.lat;
                         let groupName = json.name;

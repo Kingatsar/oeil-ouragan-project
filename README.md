@@ -30,7 +30,7 @@ A weather station can be subscribed to several probes and presents the data of t
 
     // to use the mock server, run the mock server on localhost:3000
     // mock server has been deleted
-
+###
 
 ## SERVER
 1- install expresss
@@ -63,7 +63,7 @@ WantedBy=multi-user.target
  https://vue-chartjs.org/
 
  https://vue-chartjs.org/examples/
- 
+
  https://vuestic.dev/fr/introduction/roadmap
 
 

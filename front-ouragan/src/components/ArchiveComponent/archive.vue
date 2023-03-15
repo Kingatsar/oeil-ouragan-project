@@ -58,13 +58,13 @@ export default {
             },
 
             chartType: [
-                "bar",
                 "line",
-                "bar",
                 "line",
-                "bar",
                 "line",
-                "bar",
+                "line",
+                "line",
+                "line",
+                "line",
 
             ],
             dataLoaded: false,

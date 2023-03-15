@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      listServer: ["http://piensg027:3000", "http://piensg028:3000"],
+      listServer: ["http://piensg027:3000", "http://piensg028:3000", "http://piensg031:3000"],
       nbDataLoaded: 0,
       dataLoaded: false,
       jsonOk: true,

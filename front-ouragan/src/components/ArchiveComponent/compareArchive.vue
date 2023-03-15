@@ -34,7 +34,7 @@ export default {
         server: function () {
             this.serverFromProps = this.server;
             this.AllDataloaded = false
-            console.log("switch server to " + this.serverFromProps)
+            // console.log("switch server to " + this.serverFromProps)
             this.getAllData()
         }
     },
@@ -44,7 +44,7 @@ export default {
         return {
             serverFromProps: this.server,
             jsonOk: true,
-            listServer: ["http://piensg027:3000", "http://piensg028:3000"],
+            listServer: ["http://piensg027:3000", "http://piensg028:3000", "http://piensg031:3000"],
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -57,13 +57,13 @@ export default {
             },
 
             chartType: [
-                "bar",
                 "line",
-                "bar",
                 "line",
-                "bar",
                 "line",
-                "bar",
+                "line",
+                "line",
+                "line",
+                "line",
 
             ],
             AllDataloaded: false,
@@ -130,30 +130,26 @@ export default {
 
             for (let i = 0; i < this.listServer.length; i++) {
 
-
-
                 let json = {};
 
                 let promiseData;
 
                 if (isUniqueFeature) {
                     try {
-                        console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
+                        // console.log(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "/" + new Date(data.date).toISOString())
                         promiseData = await fetch(this.listServer[i] + "/archive/" + data.period + "/" + data.feature + "?endDateTime=" + new Date(data.date).toISOString())
                         this.jsonOk = true
                     }
                     catch (error) {
-                        "cactch"
                         this.jsonOk = false
                     }
                 }
                 else {
                     try {
-                        console.log(this.listServer[i] + "/archive/" + "day" + "/" + data.feature + "/" + new Date().toISOString())
+                        // console.log(this.listServer[i] + "/archive/" + "day" + "/" + data.feature + "/" + new Date().toISOString())
                         promiseData = await fetch(this.listServer[i] + "/archive/" + "day" + "/" + data.feature)
                         this.jsonOk = true
                     } catch (error) {
-                        "cactch"
                         this.jsonOk = false
                     }
 
@@ -181,8 +177,8 @@ export default {
 
                 this.nbLodadedCompareArchive++
 
-                console.log(this.nbLodadedCompareArchive)
-                console.log(this.listServer.length)
+                // console.log(this.nbLodadedCompareArchive)
+                // console.log(this.listServer.length)
 
                 if (!isUniqueFeature) {
 
@@ -195,7 +191,7 @@ export default {
                 else {
                     if (this.nbLodadedCompareArchive == this.listServer.length) {
                         this.AllDataloaded = true
-                        console.log("this.listServer.length")
+                        // console.log("this.listServer.length")
 
                         this.nbLodadedCompareArchive = 0;
 

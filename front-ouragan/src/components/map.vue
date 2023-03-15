@@ -41,22 +41,24 @@ export default {
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            let listServer = ["http://localhost:3000", "http://piensg027:3000", "http://piensg028:3000"]
+            let listServer = ["http://piensg031:3000", "http://piensg027:3000", "http://piensg028:3000"]
 
             let sondeIcon = L.icon({
-                iconUrl: require("@/assets/sonde.png"),
+                iconRetinaUrl: require('@/assets/sonde.png'),
+                iconUrl: require('@/assets/sonde.png'),
+                shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 
-                iconSize: [50, 50], // size of the icon
-                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                shadowAnchor: [4, 62],  // the same for the shadow
-                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+                iconSize: [48, 72],
+                iconAnchor: [24, 72],
+                shadowAnchor: [24, 72],  // the same for the shadow
+                popupAnchor: [-3, -60] // point from which the popup should open relative to the iconAnchor
             });
 
             for (let i = 0; i < listServer.length; i++) {
                 fetch(listServer[i] + "/live")
                     .then((res) => res.json())
                     .then((json) => {
-                        console.log(json.measurements);
+                        // console.log(json.measurements);
                         let lon = json.location["long"];
                         let lat = json.location.lat;
                         let groupName = json.name;

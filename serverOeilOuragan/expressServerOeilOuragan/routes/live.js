@@ -6,10 +6,13 @@ const router = express.Router();
 
 /* GET last values of measurements. */
 router.get('/:feature?', function (req, res, next) {
+    const dateNow = new Date();
+    const dateHourBefore = new Date();
+    dateHourBefore.setHours(dateHourBefore.getHours() - 1);
+
+
     let feat = req.params.feature;
-    console.log(" ----------- feat -----------");
-    console.log(feat != undefined);
-    console.log('get value for live');
+
     const { MongoClient } = require('mongodb');
 
     // Connection URL
@@ -29,6 +32,7 @@ router.get('/:feature?', function (req, res, next) {
         const db = client.db(dbName);
         const collection = db.collection('sensor-collection');
         const collection_loc = db.collection('gpsNmea-collection');
+        const collection_rain = db.collection('rainCounter-collection');
 
         let myCollec = collection.find().sort({ x: -1 }).limit(1).toArray(function (err, result) {
             if (err) {
@@ -46,7 +50,15 @@ router.get('/:feature?', function (req, res, next) {
             return result
         });
 
-        return Promise.all([myCollec, myCollecLoc]);
+        let myCollecRain = collection_rain.find({ time: { $gt: dateHourBefore, $lt: dateNow } }).toArray(function (err, result) {
+            if (err) {
+                throw err;
+            }
+            return result;
+        });
+
+
+        return Promise.all([myCollec, myCollecLoc, myCollecRain]);
     }
 
     //generateJSONFeature(data, feature)

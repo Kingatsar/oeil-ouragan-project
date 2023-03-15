@@ -264,7 +264,7 @@ function computeRainArchive(dataJSONRain, period) {
         let timesMonth = [];
         for (let i = 0; i < (idxIntervalMonth.length - 1); i++) {
             slicedList = sliceList(resultVal, idxIntervalMonth[i], idxIntervalMonth[i + 1]);
-            valueMonth.push(meanArray(sliceList));
+            valueMonth.push(meanArray(slicedList));
         }
         idxIntervalMonth.pop()
         idxIntervalMonth.forEach(element => {

@@ -30,7 +30,8 @@ A weather station can be subscribed to several probes and presents the data of t
 
     // to use the mock server, run the mock server on localhost:3000
     // mock server has been deleted
-###
+### Observation: 
+   for comparaison bewteen servers api if one of the server api do not work properly, the comparaison won't work.
 
 ## SERVER
 1- install expresss

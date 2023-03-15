@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-// const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 
@@ -13,5 +12,4 @@ const gpsNmeaSchema = new Schema({
 })
 
 const GpsNmea = model('GpsNmea', gpsNmeaSchema, 'gpsNmea-collection');
-// module.export = GpsNmea;
 export default GpsNmea;

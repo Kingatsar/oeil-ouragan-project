@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      selectedServer: 'http://piensg028:3000',
+      selectedServer: 'http://piensg027:3000',
     }
   },
 

@@ -34,7 +34,7 @@ export default {
     methods:
     {
         disp() {
-            var map = L.map('map').setView([48, 891807, 2.303593], 4);
+            var map = L.map('map').setView([48, 891807, 2.303593], 3);
 
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,

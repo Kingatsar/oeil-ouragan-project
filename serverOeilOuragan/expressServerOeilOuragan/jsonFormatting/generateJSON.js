@@ -44,7 +44,7 @@ const generateJSONLive = function (data) {
             },
             rain: {
                 name: "Rainfall",
-                value: dataJSONRain.lentgh,
+                value: dataJSONRain.length,
                 unit: "mm/m²/h",
                 desc: "Rainfall"
             },

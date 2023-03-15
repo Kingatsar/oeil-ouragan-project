@@ -6,8 +6,16 @@ const generateJSONLive = function (data) {
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
     let dataJSONRain = dataParse[2];
+    let rainValue;
     console.log(' ---------- generateJSONLive ---------- ');
-    console.log(dataJSONRain.lentgh);
+    console.log(dataJSONRain.length);
+
+    if (dataJSONRain.length == 0) {
+        rainValue = 0;
+    } else {
+        rainValue = computeRainFall(dataJSONRain);
+    }
+
     result = {
         id: 28,
         name: "Oeil d'Ouragan",
@@ -44,7 +52,7 @@ const generateJSONLive = function (data) {
             },
             rain: {
                 name: "Rainfall",
-                value: dataJSONRain.length,
+                value: rainValue,
                 unit: "mm/m²/h",
                 desc: "Rainfall"
             },

@@ -9,16 +9,6 @@ import GpsNmea from './model/GpsNmea.js';
 import RainCounter from './model/RainCounter.js';
 import nmea from 'node-nmea';
 import fs from 'fs';
-// import * from 'log-timestamp';
-
-// const mongoose = require('mongoose');
-// const Sensor = require('./model/Sensor.js');
-// const Tph = require('./model/Tph.js');
-// const GpsNmea = require('./model/GpsNmea.js');
-// const RainCounter = require('./model/RainCounter.js');
-// const nmea = require('node-nmea');
-// const fs = require('fs');
-
 
 // insert new data into mongoDB
 const sensors = '/dev/shm/sensors';
@@ -45,15 +35,12 @@ function watchMyFile(filePath) {
 
         console.log(`${filePath} file Changed`);
 
-
         console.log("Read file");
         fs.readFile(filePath, 'utf-8', (err, data) => {
             if (err) {
                 return console.error(err);
             }
             myJSON = dosomething(data, filePath);
-
-
 
         })
 

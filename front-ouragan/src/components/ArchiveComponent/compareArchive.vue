@@ -44,7 +44,7 @@ export default {
         return {
             serverFromProps: this.server,
             jsonOk: true,
-            listServer: ["http://piensg027:3000"],
+            listServer: ["http://piensg027:3000", "http://piensg028:3000"],
             allChartData: {},
             dataNames: {
                 "lum": "lumière",
@@ -85,6 +85,7 @@ export default {
             this.AllDataloaded = false,
                 this.getOneDataPerServer(data, true)
         },
+        // récupérer tous les donnés des archive en utilisant la list dataNames de la propriété data en haut
         getAllData() {
             // console.log(Object.keys(this.dataNames).length);
 
@@ -95,6 +96,8 @@ export default {
 
         },
 
+        // récupérer les donéées d'un feature  de archive pour chaque server
+        // chart js exige que ce fontion soit asycnrone, d'ou async
         async getOneDataPerServer(data, isUniqueFeature) {
 
             this.lisOptions.push(
@@ -203,16 +206,13 @@ export default {
             }
 
         }
-
-
         ,
-
+        // colorisation random des chart pour chaque groupe
         getRandomRgb() {
             var num = Math.round(0xffffff * Math.random());
             var r = num >> 16;
             var g = num >> 8 & 255;
             var b = num & 255;
-
             return 'rgb(' + r + ', ' + g + ', ' + b + ', 1)';
 
         }

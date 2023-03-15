@@ -1,5 +1,5 @@
 <template>
-    <h1>Archive</h1>
+    <h1>Archive: {{ groupeName }}</h1>
     <div v-if="jsonOk" class="graphs">
         <div class="graph" v-for="(value, index) in Object.entries(dataNames)" :key="index">
             <!-- we wait that all data are fetched before diplaying them-->
@@ -42,6 +42,7 @@ export default {
 
     data() {
         return {
+            groupeName: "",
             apiUrl: "",
             serverFromProps: this.server,
             allChartData: {},
@@ -80,9 +81,11 @@ export default {
     },
     methods:
     {
+        //evement clilck émis par le composant fils chartCart et génrer par ce composent parent 
         handleClickInParent: function (data) {
             this.getOneDataFromArchive(data.feature, this.serverFromProps + "/archive/" + data.period + "/" + data.feature + "?endDateTime=" + new Date(data.date).toISOString())
         },
+        // récupérer tous les donnés des archive en utilisant la list dataNames de la propriété data en haut
         getAllData() {
             try {
                 for (let i = 0; i < Object.keys(this.dataNames).length; i++) {
@@ -102,12 +105,15 @@ export default {
 
         },
 
+        // récupérer les donéées d'un feature  de archive 
+        // chart js exige que ce fontion soit asycnrone, d'ou async
         async getOneDataFromArchive(feature, apiUrl) {
             try {
-                console.log(apiUrl);
+                // console.log(apiUrl);
                 this.apiUrl = apiUrl;
                 let data = await fetch(apiUrl)
                 let json = await data.json();
+                this.groupeName = json.name;
                 //store chart data in allChartData 
                 this.allChartData[feature] = {
                     "labels": json.measurements[feature].times.map(date => new Date(date).toLocaleString()),

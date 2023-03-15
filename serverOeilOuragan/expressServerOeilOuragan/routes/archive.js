@@ -220,6 +220,11 @@ function computeRainArchive(dataJSONRain) {
         myVal.push(element);
     })
 
+    console.log('---------------- computeRainArchive ----------------');
+    console.log(myVal);
+    // console.log(resultVal);
+    // console.log(resultTimes);
+
     let myValSliced = sliceTime(myVal, 13);
     let idxValInterval = getIdxInterval(myValSliced);
 
@@ -233,10 +238,7 @@ function computeRainArchive(dataJSONRain) {
     })
 
 
-    console.log('---------------- computeRainArchive ----------------');
-    console.log(myVal);
-    console.log(resultVal);
-    console.log(resultTimes);
+
     return [resultVal, resultTimes];
 }
 

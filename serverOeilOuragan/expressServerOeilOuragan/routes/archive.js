@@ -35,6 +35,7 @@ router.get('/:period/:feature', function (req, res, next) {
         const db = client.db(dbName);
         const collection = db.collection('sensor-collection');
         const collection_loc = db.collection('gpsNmea-collection');
+        const collection_rain = db.collection('rainCounter-collection');
 
         let myCollec = collection.find({ time: { $gt: beginDate, $lt: endDatetime } }).toArray(function (err, result) {
             if (err) {
@@ -50,7 +51,14 @@ router.get('/:period/:feature', function (req, res, next) {
             return result
         });
 
-        return Promise.all([myCollec, myCollecLoc]);
+        let myCollecRain = collection_rain.find({ time: { $gt: beginDate, $lt: endDatetime } }).toArray(function (err, result) {
+            if (err) {
+                throw err;
+            }
+            return result;
+        });
+
+        return Promise.all([myCollec, myCollecLoc, myCollecRain]);
     }
 
     main()
@@ -86,6 +94,8 @@ function storeData(data, feature, period) {
     let dataParse = JSON.parse(data);
     let dataJSON = dataParse[0];
     let dataJSONLoc = dataParse[1];
+    let dataJSONRain = dataParse[2];
+
     let filtered;
     let result = {
         id: 28,
@@ -121,6 +131,11 @@ function storeData(data, feature, period) {
     filtered = filterValues(values, times, period);
     values = filtered[0];
     times = filtered[1];
+
+    // Rain 
+    let rainValtime = computeRainArchive(dataJSONRain, period);
+    let rainVal = rainValtime[0];
+    let rainTime = rainValtime[1];
 
     if (feature.includes("lum")) {
         result["measurements"] = {
@@ -166,8 +181,8 @@ function storeData(data, feature, period) {
         result["measurements"] = {
             rain: {
                 name: "Rainfall",
-                values: values,
-                times: times,
+                values: rainVal,
+                times: rainTime,
                 unit: "mm/m²/h",
                 desc: "Rainfall"
             }
@@ -195,6 +210,71 @@ function storeData(data, feature, period) {
     }
 
     return result;
+}
+
+function computeRainArchive(dataJSONRain, period) {
+    let myVal = [];
+    let resultVal = [];
+    let resultTimes = [];
+    let myValSliced;
+    let idxValInterval;
+    let midIdx;
+
+    dataJSONRain.forEach(element => {
+        myVal.push(element.time);
+    })
+
+    myValSliced = sliceTime(myVal, 13);
+    idxValInterval = getIdxInterval(myValSliced);
+    for (let i = 0; i < idxValInterval.length - 1; i++) {
+        resultVal.push((idxValInterval[i + 1] - idxValInterval[i]) * 0.3274);
+    }
+
+    if (period.includes("day")) {
+        idxValInterval.pop();
+        idxValInterval.forEach(element => {
+            resultTimes.push(myVal[element] + ":00:00.000Z");
+        })
+    } else if (period.includes("week")) {
+        let valueWeek = [];
+        let timesWeek = [];
+        let sliceWeek = sliceTime(myValSliced, 10);
+        let idxIntervalWeek = getIdxInterval(sliceWeek);
+        for (let i = 0; i < idxIntervalWeek.length - 1; i++) {
+            midIdx = (idxIntervalWeek[i] + idxIntervalWeek[i + 1]) / 2;
+            slicedList1 = sliceList(resultVal, idxIntervalWeek[i], midIdx);
+            slicedList2 = sliceList(resultVal, midIdx, idxIntervalWeek[i + 1]);
+
+            valueWeek.push(meanArray(slicedList1));
+            valueWeek.push(meanArray(slicedList2));
+        }
+        idxIntervalWeek.pop()
+        idxIntervalWeek.forEach(element => {
+            timesWeek.push(myVal[element] + "T00:00:00.000Z");
+            timesWeek.push(myVal[element] + "T13:00:00.000Z");
+        })
+        resultTimes = timesWeek;
+        resultVal = valueWeek;
+    } else if (period.includes("month")) {
+        let sliceMonth = sliceTime(myValSliced, 10);
+        let idxIntervalMonth = getIdxInterval(sliceMonth);
+        let slicedList;
+        let valueMonth = [];
+        let timesMonth = [];
+        for (let i = 0; i < (idxIntervalMonth.length - 1); i++) {
+            slicedList = sliceList(resultVal, idxIntervalMonth[i], idxIntervalMonth[i + 1]);
+            valueMonth.push(meanArray(slicedList));
+        }
+        idxIntervalMonth.pop()
+        idxIntervalMonth.forEach(element => {
+            timesMonth.push(myVal[element] + "T00:00:00.000Z");
+        })
+
+        resultVal = valueMonth;
+        resultTimes = timesMonth;
+    }
+
+    return [resultVal, resultTimes];
 }
 
 function sliceTime(listTimes, idx) {

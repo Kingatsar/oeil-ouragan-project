@@ -1,17 +1,17 @@
-
+// Imports
 const gen = require('../jsonFormatting/generateJSON');
 const express = require('express');
-const Sensor = require('../model/Sensor');
 const router = express.Router();
 
 /* GET last values of measurements. */
 router.get('/:feature?', function (req, res, next) {
+    // Route variable
+    let feat = req.params.feature;
+
+    // Date variables to retrieve rain
     const dateNow = new Date();
     const dateHourBefore = new Date();
     dateHourBefore.setHours(dateHourBefore.getHours() - 1);
-
-
-    let feat = req.params.feature;
 
     const { MongoClient } = require('mongodb');
 
@@ -60,8 +60,6 @@ router.get('/:feature?', function (req, res, next) {
 
         return Promise.all([myCollec, myCollecLoc, myCollecRain]);
     }
-
-    //generateJSONFeature(data, feature)
 
     if (feat != undefined) {
         main()

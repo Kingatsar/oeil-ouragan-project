@@ -37,17 +37,26 @@ A weather station can be subscribed to several probes and presents the data of t
 ## Installation
 
 ### Front: 
-    (there is a readme in the front folder)
-    - clone: git clone https://gitlab.com/kingatsa/oeil-ouragan-project.git
-    - npm install -g @vue/cli (install vue if not exist)
-    - cd ../front-ouragan (go  to this folder in the terminal)
-    - npm install (install dependancies)
-    - npm run serve (run server)
-    - in a browser, open localhost:8080
+(There is a readme in the front folder)
 
-    // to use the mock server, run the mock server on localhost:3000
-    // mock server has been deleted
+```cmd
+git clone https://gitlab.com/kingatsa/oeil-ouragan-project.git #clone
+npm install -g @vue/cli  #(install vue if not exist)
+```
+In the project folder:
+```cmd
+cd ./front-ouragan #(go to this folder in the terminal)
+npm install #(install dependancies)
+npm run serve #(run server)
+```
+
+In a browser, open localhost:8080/
+
+To use the mock server, run the mock server on localhost:3000
+tmock server has been deleted
+
 #### Observation: 
+    - the front vue project has been compressed with the build command and put in the public folder of the express project 
     - for live and archvie:
         - if the server is down or if the json sent by the api does not follow the norme written in swager, you will have this error (and if the response is slow, you will see this signal for a second): 
 
@@ -58,9 +67,9 @@ A weather station can be subscribed to several probes and presents the data of t
         - if you don't see the data, refesh the card with refresh button 
 
 ### SERVER
-1- install expresss
+ 1- Install expresss
 
-2- install no demon 
+ 2- Install no demon 
 install nodemon for restarting the node application when file changes i
 
 ```cmd
@@ -68,9 +77,24 @@ install nodemon for restarting the node application when file changes i
 ```
 -   change node to nodemon in package.json
 
-3 install mongo
-    Install mongodb  using docker 
+ 3- Install mongo
+Install mongodb  using docker:
+```cmd
     docker run -d --name mongoOuragan -p 27017:27017 mongo
+```
+ 4- To save the data
+In the project folder:
+```cmd
+    cd ./load #(go  to this folder in the terminal)
+    npm i #(install dependancies)
+```
+
+ 5- To run the express server
+In the project folder:
+```cmd
+    cd ./serverOeilOuragan/expressServerOeilOuragan #(go  to this folder in the terminal)
+    npm i #(install dependancies)
+```
 
 ## SytemD
 
@@ -91,6 +115,12 @@ ExecStart=/usr/bin/npm run dev
 WantedBy=multi-user.target
 EOF
 ```
+To start the demon
+```cmd
+    sudo systemctl enable ouragan.service
+    sudo systemctl start ouragan.service
+```
+
 
 ### Back server Load data
 The following command generates a daemon which goal is load data to the database
@@ -108,6 +138,11 @@ ExecStart=/usr/bin/npm run load
 [Install]
 WantedBy=multi-user.target
 EOF
+```
+To start the demon
+```cmd
+    sudo systemctl enable load.service
+    sudo systemctl start load.service
 ```
 
 ## License

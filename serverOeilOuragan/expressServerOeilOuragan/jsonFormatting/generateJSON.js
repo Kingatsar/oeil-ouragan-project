@@ -1,5 +1,5 @@
 
-const generateJSONLive = function (data) {
+const generateJSONLive = function (data, time) {
 
     /* 
         Generates JSON format for live 
@@ -18,7 +18,8 @@ const generateJSONLive = function (data) {
     } else {
         rainValue = computeRainFall(dataJSONRain);
     }
-
+    console.log('------------ time ------------');
+    console.log(time);
     result = {
         id: 28,
         name: "Oeil d'Ouragan",
@@ -26,7 +27,7 @@ const generateJSONLive = function (data) {
             lat: dataJSONLoc[0].lat,
             long: dataJSONLoc[0].long
         },
-        time: dataJSON.time,
+        time: time,
         status: true,
         measurements: {
             lum: {
@@ -77,20 +78,20 @@ const generateJSONLive = function (data) {
     return result;
 };
 
-const generateJSONFeature = function (data, feature) {
+const generateJSONFeature = function (data, feature, time) {
 
     /*  
         Generate JSON for each feature
     */
 
     let result;
-    liveJSON = generateJSONLive(data);
+    liveJSON = generateJSONLive(data, time);
     if (feature.includes("lum")) {
         result = {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 lum: liveJSON.measurements.lum
@@ -101,7 +102,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 temp: liveJSON.measurements.temp
@@ -112,7 +113,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 hum: liveJSON.measurements.hum
@@ -123,7 +124,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 pre: liveJSON.measurements.pre
@@ -134,7 +135,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 rain: liveJSON.measurements.rain
@@ -145,7 +146,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 wind_speed: liveJSON.measurements.wind_speed
@@ -156,7 +157,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status,
             measurements: {
                 wind_dir: liveJSON.measurements.wind_dir
@@ -167,7 +168,7 @@ const generateJSONFeature = function (data, feature) {
             id: liveJSON.id,
             name: liveJSON.name,
             location: liveJSON.location,
-            time: liveJSON.time,
+            time: time,
             status: liveJSON.status
         }
     }

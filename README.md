@@ -4,7 +4,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/username/repo.svg)](https://github.com/username/repo/issues)
 [![GitHub stars](https://img.shields.io/github/stars/username/repo.svg)](https://github.com/username/repo/stargazers)
 
- -The goal is to realize the software part of a weather station composed of sensors and a central. Each probe is connected to several sensors that give various information:
+ The goal is to realize the software part of a weather station composed of sensors and a central. Each probe is connected to several sensors that give various information:
 
     Temperature
     Hygrometry
@@ -27,7 +27,7 @@ A weather station can be subscribed to several probes and presents the data of t
 
 ## Project access
 
-URL: piensg028:3000/ 
+### URL: piensg028:3000/ 
 (works only at our school)
     - go to this url (http://piensg028:3000) to test the app 
 
@@ -53,7 +53,9 @@ URL: piensg028:3000/
 2- install no demon 
 install nodemon for restarting the node application when file changes i
 
--   npm install --save-dev nodemon
+```cmd
+    npm install --save-dev nodemon
+```
 -   change node to nodemon in package.json
 
 3 install mongo
@@ -64,7 +66,8 @@ install nodemon for restarting the node application when file changes i
 
 ### Back server Daemon
 The following command generates a daemon which goal is to run a server for retrieving data
-```
+
+```cmd
 cat << 'EOF' | sudo tee /etc/systemd/system/ouragan.service
 [Unit]
 Description=weather fake data generator
@@ -81,7 +84,8 @@ EOF
 
 ### Back server Load data
 The following command generates a daemon which goal is load data to the database
-```
+
+```cmd
 cat << 'EOF' | sudo tee /etc/systemd/system/load.service
 [Unit]
 Description=weather fake data generator
@@ -102,16 +106,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Useful links
 ### Front
-    - Vue charts [link](https://vue-chartjs.org/)
+- Vue charts [link](https://vue-chartjs.org/)
 
-    - Vue charts examples [link](https://vue-chartjs.org/examples/)
+- Vue charts examples [link](https://vue-chartjs.org/examples/)
 
-    - [link](https://vuestic.dev/fr/introduction/roadmap)
+- [link](https://vuestic.dev/fr/introduction/roadmap)
 
 ### Back
 
-    - How to Insert Data into MongoDB with Node.js and Mongoose [link](https://technoapple.com/blog/post/How-to-Insert-Data-into-MongoDB-with-Node.js-and-Mongoose)
+- How to Insert Data into MongoDB with Node.js and Mongoose [link](https://technoapple.com/blog/post/How-to-Insert-Data-into-MongoDB-with-Node.js-and-Mongoose)
 
-    - Getting Started with MongoDB & Mongoose [link](https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/)
+- Getting Started with MongoDB & Mongoose [link](https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/)
 
 

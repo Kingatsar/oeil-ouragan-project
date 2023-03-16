@@ -48,7 +48,14 @@ A weather station can be subscribed to several probes and presents the data of t
     // to use the mock server, run the mock server on localhost:3000
     // mock server has been deleted
 #### Observation: 
-   for comparaison bewteen servers api if one of the server api do not work properly, the comparaison won't work.
+    - for live and archvie:
+        - if the server is down or if the json sent by the api does not follow the norme written in swager, you will have this error (and if the response is slow, you will see this signal for a second): 
+
+![server/api erro](./images/liveServerError.png).
+
+    - for comparaison: 
+        - bewteen servers api if one of the server api do not work properly, the comparaison won't work.
+        - if you don't see the data, refesh the card with refresh button 
 
 ### SERVER
 1- install expresss
@@ -113,7 +120,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Vue charts examples [link](https://vue-chartjs.org/examples/)
 
-- [link](https://vuestic.dev/fr/introduction/roadmap)
+- Compoment vue exemple [link](https://vuestic.dev/en/introduction/overview)
 
 ### Back
 

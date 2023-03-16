@@ -31,6 +31,9 @@ A weather station can be subscribed to several probes and presents the data of t
 (works only at our school)
     - go to this url (http://piensg028:3000) to test the app 
 
+
+![website](./images/website_interface.png).
+
 ## Installation
 
 ### Front: 

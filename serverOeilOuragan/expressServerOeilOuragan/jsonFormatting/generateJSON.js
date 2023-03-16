@@ -1,6 +1,11 @@
 
 const generateJSONLive = function (data) {
-    /* Generates JSON format for live */
+
+    /* 
+        Generates JSON format for live 
+    */
+
+    // Variables
     let result;
     let dataParse = JSON.parse(data);
     let dataJSON = dataParse[0];
@@ -73,7 +78,11 @@ const generateJSONLive = function (data) {
 };
 
 const generateJSONFeature = function (data, feature) {
-    /*  feature String */
+
+    /*  
+        Generate JSON for each feature
+    */
+
     let result;
     liveJSON = generateJSONLive(data);
     if (feature.includes("lum")) {

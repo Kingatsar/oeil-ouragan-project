@@ -1,3 +1,4 @@
+// imports
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -6,7 +7,6 @@ var logger = require('morgan');
 var cors = require('cors');
 
 var indexRouter = require('./routes/index');
-var sensorRouter = require('./routes/sensors_data');
 var liveRouter = require('./routes/live');
 var archiveRouter = require('./routes/archive');
 
@@ -24,7 +24,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/sensor', sensorRouter);
 app.use('/live', liveRouter);
 app.use('/archive', archiveRouter);
 

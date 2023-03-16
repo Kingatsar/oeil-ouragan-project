@@ -63,14 +63,14 @@ router.get('/:feature?', function (req, res, next) {
 
     if (feat != undefined) {
         main()
-            .then((result) => res.json(gen.generateJSONFeature(JSON.stringify(result), feat)))
+            .then((result) => res.json(gen.generateJSONFeature(JSON.stringify(result), feat, dateNow)))
             .catch(console.error)
             .finally(() => client.close())
             .then(console.log("connection done"));
 
     } else {
         main()
-            .then((result) => res.json(gen.generateJSONLive(JSON.stringify(result))))
+            .then((result) => res.json(gen.generateJSONLive(JSON.stringify(result), dateNow)))
             .catch(console.error)
             .finally(() => client.close())
             .then(console.log("connection done"));
